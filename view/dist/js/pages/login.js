@@ -1,38 +1,34 @@
-var logIn = $(function () {
-    "use strict";
+var logIn = function () {
 
-    function initialize() {
-        alert("");
+    var initialize = function () {
         eventListeners();
     };
 
     var eventListeners = function () {
-        var username = $('#username').val;
-        var password = $('#password').val;
-        $('#signIn').click(logInAttempt(username, password));
+        $('#signIn').click(function () {
+            var username = $('#username').val();
+            var password = $('#password').val();
+            logInAttempt(username,password);
+        });
     };
 
     var logInAttempt = function (username, password) {
-        alert("a");
         var request = $.ajax({
             url: "http://localhost:8080/BIPortalDemo/login.php",
             type: "post",
             data: {
-                'username' : username,
-                'password' : password
+                'username': username,
+                'password': password
             }
         });
-        // Callback handler that will be called on success
-        request.done(function (response, textStatus, jqXHR){
-            // Log a message to the console
-            console.log("Hooray, it worked!");
+
+        request.done(function (response, textStatus, jqXHR) {
+            console.log("Hooray, it worked!\n" + response + "\n" + textStatus);
         });
 
-        // Callback handler that will be called on failure
-        request.fail(function (jqXHR, textStatus, errorThrown){
-            // Log the error to the console
+        request.fail(function (jqXHR, textStatus, errorThrown) {
             console.error(
-                "The following error occurred: "+
+                "The following error occurred: " +
                 textStatus, errorThrown
             );
         });
@@ -42,4 +38,4 @@ var logIn = $(function () {
     return {
         initialize: initialize
     };
-});
+}();

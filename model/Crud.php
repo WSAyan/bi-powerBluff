@@ -13,6 +13,7 @@ class Crud
     function __construct()
     {
         require_once 'db/DbConnect.php';
+        require_once 'db/Hashing.php';
         $db = new DbConnect();
         $this->conn = $db->connect();
     }
@@ -24,30 +25,34 @@ class Crud
 
     public function storeUser($userType, $username, $email, $password)
     {
-        $hash = $this->hashSSHA($password);
+        //$hash = $this->hashSSHA($password);
+        $hash = Hashing::hash($password);
         $encrypted_password = $hash["encrypted"]; // encrypted password
         $salt = $hash["salt"]; // salt
         $stmt = $this->conn->prepare("INSERT INTO users(usertype, username, email, password, salt) VALUES(?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $userType, $username, $email, $encrypted_password, $salt);
-        $result = $stmt->execute();
-        $stmt->close();
-
-        if ($result) {
-            $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = ?");
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            $user = $stmt->get_result()->fetch_assoc();
+        if ($stmt) {
+            $stmt->bind_param("sssss", $userType, $username, $email, $encrypted_password, $salt);
+            $result = $stmt->execute();
             $stmt->close();
-            return $user;
+            if ($result) {
+                $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = ?");
+                $stmt->bind_param("s", $email);
+                $stmt->execute();
+                $user = $stmt->get_result()->fetch_assoc();
+                $stmt->close();
+                return $user;
+            } else {
+                return false;
+            }
         } else {
-            return false;
+            echo $this->conn->error;
         }
     }
 
     public function isUserExisted($email)
     {
         $stmt = $this->conn->prepare("SELECT email from users WHERE email = ?");
-        $stmt->bind_param("s", $username);
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
         if ($stmt->num_rows > 0) {
@@ -62,20 +67,26 @@ class Crud
     public function logInAttempt($username, $password)
     {
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
-        $stmt->bind_param("s", $username);
-        if ($stmt->execute()) {
-            $user = $stmt->get_result()->fetch_assoc();
-            $stmt->close();
-            $salt = $user['salt'];
-            $check = Hashing::check_password($salt,$password);
-            if ($check) {
-                return $user;
+        if ($stmt) {
+            $stmt->bind_param("s", $username);
+            if ($stmt->execute()) {
+                $user = $stmt->get_result()->fetch_assoc();
+                $stmt->close();
+                $hash = $user['password'];
+                $salt = $user['salt'];
+                $check = Hashing::check_password($password, $salt, $hash);
+                if ($check) {
+                    return $user;
+                } else {
+                    return NULL;
+                }
             } else {
                 return NULL;
             }
         } else {
-            return NULL;
+            echo $this->conn->error;
         }
+
     }
 
     public function hashSSHA($password)

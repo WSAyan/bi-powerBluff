@@ -13,6 +13,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $user = $db->logInAttempt($username, $password);
+    //$user = $db->storeUser(201,$username,'admin@amsd.com', $password);
     if ($user != null) {
         Redirect::loadPage("admin.php");
     } else {
@@ -55,9 +56,9 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">Sign In or Register</p>
 
-        <form>
+        <!--<form>
             <div class="form-group has-feedback">
                 <input type="text" id="username" class="form-control" placeholder="Username">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -66,7 +67,15 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                 <input type="password" class="form-control" placeholder="Password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
-        </form>
+        </form>-->
+        <div class="form-group has-feedback">
+            <input type="text" id="username" class="form-control" placeholder="Username">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+            <input type="password" id="password" class="form-control" placeholder="Password">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
 
         <div class="row">
             <div class="col-xs-8">
@@ -78,9 +87,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             </div>
             <!-- /.col -->
             <div class="col-xs-4">
-                <button type="submit" onclick="window.location.href='admin.php'" id="signIn" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                <button id="signIn" class="btn btn-primary btn-block btn-flat">Sign In</button>
             </div>
             <!-- /.col -->
+            <!--onclick="window.location.href='admin.php'"-->
         </div>
 
         <!-- /.social-auth-links -->
@@ -108,11 +118,9 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         });
     });
 </script>
-
-<script src="view/dist/js/pages/login.js">
-    $(document).ready(function () {
-        initialize();
-    });
+<script src="view/dist/js/pages/login.js"></script>
+<script>
+    logIn.initialize();
 </script>
 </body>
 </html>
