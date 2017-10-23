@@ -89,6 +89,22 @@ class Crud
 
     }
 
+    public function getAllDepartments()
+    {
+        $stmt = $this->conn->prepare("SELECT * from departments");
+        if ($stmt) {
+            if ($stmt->execute()) {
+                $departments = $stmt->get_result();
+                $stmt->close();
+                return $departments;
+            } else {
+                return NULL;
+            }
+        } else {
+            echo $this->conn->error;
+        }
+    }
+
     public function hashSSHA($password)
     {
         $salt = sha1(rand());

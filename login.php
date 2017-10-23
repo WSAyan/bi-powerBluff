@@ -7,7 +7,7 @@
  */
 
 require_once 'model/Crud.php';
-require_once 'model/Redirect.php';
+require_once 'utils/Redirect.php';
 $db = new Crud();
 if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];

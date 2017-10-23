@@ -1,5 +1,5 @@
 <?php
-require_once 'model/Redirect.php';
+require_once 'Utils/Redirect.php';
 Redirect::loadPage("login.php");
 exit();
 ?>

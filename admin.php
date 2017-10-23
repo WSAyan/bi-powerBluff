@@ -1,3 +1,8 @@
+<?php
+require_once 'model/Crud.php';
+$db = new Crud();
+$departments = $db->getAllDepartments();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -166,7 +171,18 @@
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="admin.php"><i class="fa fa-circle-o"></i> Ascend Financial</a>
+                        <?PHP
+                        $i = 0;
+                        foreach ($departments as $dept) {
+                            if ($i == 0) {
+                                echo "<li class='active'><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
+                            } else {
+                                echo "<li><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
+                            }
+                            $i++;
+                        }
+                        ?>
+                        <!--<li class="active"><a href="admin.php"><i class="fa fa-circle-o"></i> Ascend Financial</a>
                         </li>
                         <li><a href="#"><i class="fa fa-circle-o"></i> Scaled</a></li>
                         <li><a href="#"><i class="fa fa-circle-o"></i> CAB</a></li>
@@ -174,11 +190,11 @@
                         <li><a href="#"><i class="fa fa-circle-o"></i> Ascend EE</a></li>
                         <li><a href="#"><i class="fa fa-circle-o"></i> S&R</a></li>
                         <li><a href="#"><i class="fa fa-circle-o"></i> HR</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> ITID</a></li>
+                        <li><a href="#"><i class="fa fa-circle-o"></i> ITID</a></li>-->
                     </ul>
                 </li>
 
-                <li><a href="#"><i class="fa fa-book"></i> <span>Create Report</span></a></li>
+                <li><a href="reports.php"><i class="fa fa-book"></i> <span>Create Report</span></a></li>
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -269,7 +285,7 @@
 
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
+                                            class="fa fa-minus"></i>
                                 </button>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-box-tool dropdown-toggle"
@@ -284,7 +300,7 @@
                                     </ul>
                                 </div>
                                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                        class="fa fa-times"></i></button>
+                                            class="fa fa-times"></i></button>
                             </div>
                         </div>
                         <!-- /.box-header -->
@@ -363,7 +379,7 @@
                                 <div class="col-sm-3 col-xs-6">
                                     <div class="description-block border-right">
                                         <span class="description-percentage text-yellow"><i
-                                                class="fa fa-caret-left"></i> 0%</span>
+                                                    class="fa fa-caret-left"></i> 0%</span>
                                         <h5 class="description-header">$10,390.90</h5>
                                         <span class="description-text">TOTAL COST</span>
                                     </div>
