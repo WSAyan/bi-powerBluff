@@ -18,17 +18,16 @@ class Hashing
 
     public static function hash($password)
     {
-        $salt = self::$algo .
-            self::$cost .
-            '$' . self::unique_salt();
-        $encrypted = crypt($password, $salt);
+        $salt = sha1(rand());
+        $salt = substr($salt, 0, 10);
+        $encrypted = base64_encode(sha1($password . $salt, true) . $salt);
         $hash = array("salt" => $salt, "encrypted" => $encrypted);
         return $hash;
     }
 
     public static function check_password($password, $salt, $hash)
     {
-        $new_hash = crypt($password, $salt);
-        return ($hash == $new_hash);
+        $newHash = base64_encode(sha1($password . $salt, true) . $salt);
+        return ($hash == $newHash);
     }
 }

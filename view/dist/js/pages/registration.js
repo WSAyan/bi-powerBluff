@@ -1,4 +1,4 @@
-var logIn = function () {
+var registration = function () {
 
     var initialize = function () {
         eventListeners();

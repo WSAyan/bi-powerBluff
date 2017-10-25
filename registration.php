@@ -5,6 +5,9 @@
  * Date: 10/19/2017
  * Time: 12:03 PM
  */
+require_once 'model/Crud.php';
+require_once 'utils/Redirect.php';
+$db = new Crud();
 ?>
 <!DOCTYPE html>
 <html>
@@ -41,33 +44,31 @@
     <div class="register-box-body">
         <p class="login-box-msg">Register a new membership</p>
 
-        <form action="registration.php" method="post">
+        <form action="register.php" method="post">
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" placeholder="User name">
+                <label>User type</label>
+                <input type="radio" name="user_type" value="admin"> Admin
+                <input type="radio" name="user_type" value="user"> User
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" name="username" class="form-control" placeholder="User name">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="email" class="form-control" placeholder="Email">
+                <input type="email" name="email" class="form-control" placeholder="Email">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="Password">
+                <input type="password" name="password" class="form-control" placeholder="Password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="Retype password">
+                <input type="password" name="re_password" class="form-control" placeholder="Retype password">
                 <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
             </div>
             <div class="row">
-                <div class="col-xs-8">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input type="checkbox"> I agree to the <a href="#">terms</a>
-                        </label>
-                    </div>
-                </div>
                 <!-- /.col -->
-                <div class="col-xs-4">
+                <div class="col-xs-12">
                     <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
                 </div>
                 <!-- /.col -->
@@ -95,6 +96,9 @@
             increaseArea: '20%' // optional
         });
     });
+</script>
+<script>
+    registration.initialize();
 </script>
 </body>
 </html>

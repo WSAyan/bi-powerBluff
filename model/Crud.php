@@ -25,10 +25,9 @@ class Crud
 
     public function storeUser($userType, $username, $email, $password)
     {
-        //$hash = $this->hashSSHA($password);
         $hash = Hashing::hash($password);
-        $encrypted_password = $hash["encrypted"]; // encrypted password
-        $salt = $hash["salt"]; // salt
+        $encrypted_password = $hash["encrypted"];
+        $salt = $hash["salt"];
         $stmt = $this->conn->prepare("INSERT INTO users(usertype, username, email, password, salt) VALUES(?, ?, ?, ?, ?)");
         if ($stmt) {
             $stmt->bind_param("sssss", $userType, $username, $email, $encrypted_password, $salt);
@@ -52,15 +51,17 @@ class Crud
     public function isUserExisted($email)
     {
         $stmt = $this->conn->prepare("SELECT email from users WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $stmt->store_result();
-        if ($stmt->num_rows > 0) {
-            $stmt->close();
-            return true;
-        } else {
-            $stmt->close();
-            return false;
+        if($stmt){
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $stmt->store_result();
+            if ($stmt->num_rows > 0) {
+                $stmt->close();
+                return true;
+            } else {
+                $stmt->close();
+                return false;
+            }
         }
     }
 
@@ -86,7 +87,6 @@ class Crud
         } else {
             echo $this->conn->error;
         }
-
     }
 
     public function getAllDepartments()
