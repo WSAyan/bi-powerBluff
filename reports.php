@@ -5,7 +5,7 @@
  * Date: 10/23/2017
  * Time: 2:14 PM
  */
-require_once 'Utils/OpenDirectory.php';
+require_once 'utils/OpenDirectory.php';
 require_once 'model/Crud.php';
 $db = new Crud();
 $filesList = OpenDirectory::getFileList("reports");

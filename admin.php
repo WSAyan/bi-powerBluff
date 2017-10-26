@@ -2,6 +2,7 @@
 require_once 'model/Crud.php';
 $db = new Crud();
 $departments = $db->getAllDepartments();
+$clients = $db->getAllClients(1);
 ?>
 <!DOCTYPE html>
 <html>
@@ -176,9 +177,9 @@ $departments = $db->getAllDepartments();
                         foreach ($departments as $dept) {
                             if ($i == 0) {
                                 echo "<li class='active'><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
-                            } else {
+                            } /*else {
                                 echo "<li><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
-                            }
+                            }*/
                             $i++;
                         }
                         ?>
@@ -218,7 +219,7 @@ $departments = $db->getAllDepartments();
         <section class="content">
             <!-- Info boxes -->
             <div class="row">
-                <div class="col-md-3 col-sm-6 col-xs-12">
+                <!--<div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
                         <span class="info-box-icon bg-aqua"><i class="fa fa-bank"></i></span>
 
@@ -226,11 +227,8 @@ $departments = $db->getAllDepartments();
                             <span class="info-box-text">BRAC</span>
                             <span class="info-box-number">41,410</span>
                         </div>
-                        <!-- /.info-box-content -->
                     </div>
-                    <!-- /.info-box -->
                 </div>
-                <!-- /.col -->
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
                         <span class="info-box-icon bg-red"><i class="fa fa-home"></i></span>
@@ -239,13 +237,11 @@ $departments = $db->getAllDepartments();
                             <span class="info-box-text">SAJIDA</span>
                             <span class="info-box-number">500</span>
                         </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
 
-                <!-- fix for small devices only -->
+                    </div>
+
+                </div>
+
                 <div class="clearfix visible-sm-block"></div>
 
                 <div class="col-md-3 col-sm-6 col-xs-12">
@@ -256,11 +252,9 @@ $departments = $db->getAllDepartments();
                             <span class="info-box-text">SAGARIKA</span>
                             <span class="info-box-number">410</span>
                         </div>
-                        <!-- /.info-box-content -->
                     </div>
-                    <!-- /.info-box -->
                 </div>
-                <!-- /.col -->
+
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
                         <span class="info-box-icon bg-yellow"><i class="fa fa-briefcase"></i></span>
@@ -269,11 +263,22 @@ $departments = $db->getAllDepartments();
                             <span class="info-box-text">DISA</span>
                             <span class="info-box-number">60</span>
                         </div>
-                        <!-- /.info-box-content -->
                     </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
+                </div>-->
+                <?PHP
+                foreach ($clients as $client) {
+                    echo "<div class=\"col-md-3 col-sm-6 col-xs-12\">
+                    <div class=\"info-box\">
+                        <span class=\"info-box-icon bg-aqua\"><i class=\"fa fa-bank\"></i></span>
+
+                        <div class=\"info-box-content\">
+                            <span class=\"info-box-text\">{$client['clientName']}</span>
+                            <span class=\"info-box-number\">410</span>
+                        </div>
+                    </div>
+                    </div>";
+                }
+                ?>
             </div>
             <!-- /.row -->
 
@@ -281,7 +286,7 @@ $departments = $db->getAllDepartments();
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Monthly Recap Report</h3>
+                            <h3 class="box-title">Report</h3>
 
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
@@ -306,107 +311,16 @@ $departments = $db->getAllDepartments();
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-8">
-                                    <p class="text-center">
-                                        <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
-                                    </p>
-
-                                    <div class="chart">
-                                        <!-- Sales Chart Canvas -->
-                                        <canvas id="salesChart" style="height: 180px;"></canvas>
-                                    </div>
-                                    <!-- /.chart-responsive -->
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-md-4">
-                                    <p class="text-center">
-                                        <strong>Goal Completion</strong>
-                                    </p>
-
-                                    <div class="progress-group">
-                                        <span class="progress-text">Add Products to Cart</span>
-                                        <span class="progress-number"><b>160</b>/200</span>
-
-                                        <div class="progress sm">
-                                            <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
-                                        </div>
-                                    </div>
-                                    <!-- /.progress-group -->
-                                    <div class="progress-group">
-                                        <span class="progress-text">Complete Purchase</span>
-                                        <span class="progress-number"><b>310</b>/400</span>
-
-                                        <div class="progress sm">
-                                            <div class="progress-bar progress-bar-red" style="width: 80%"></div>
-                                        </div>
-                                    </div>
-                                    <!-- /.progress-group -->
-                                    <div class="progress-group">
-                                        <span class="progress-text">Visit Premium Page</span>
-                                        <span class="progress-number"><b>480</b>/800</span>
-
-                                        <div class="progress sm">
-                                            <div class="progress-bar progress-bar-green" style="width: 80%"></div>
-                                        </div>
-                                    </div>
-                                    <!-- /.progress-group -->
-                                    <div class="progress-group">
-                                        <span class="progress-text">Send Inquiries</span>
-                                        <span class="progress-number"><b>250</b>/500</span>
-
-                                        <div class="progress sm">
-                                            <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
-                                        </div>
-                                    </div>
-                                    <!-- /.progress-group -->
-                                </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- ./box-body -->
-                        <div class="box-footer">
-                            <div class="row">
-                                <div class="col-sm-3 col-xs-6">
-                                    <div class="description-block border-right">
-                                        <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
-                                        <h5 class="description-header">$35,210.43</h5>
-                                        <span class="description-text">TOTAL REVENUE</span>
-                                    </div>
-                                    <!-- /.description-block -->
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-sm-3 col-xs-6">
-                                    <div class="description-block border-right">
-                                        <span class="description-percentage text-yellow"><i
-                                                    class="fa fa-caret-left"></i> 0%</span>
-                                        <h5 class="description-header">$10,390.90</h5>
-                                        <span class="description-text">TOTAL COST</span>
-                                    </div>
-                                    <!-- /.description-block -->
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-sm-3 col-xs-6">
-                                    <div class="description-block border-right">
-                                        <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
-                                        <h5 class="description-header">$24,813.53</h5>
-                                        <span class="description-text">TOTAL PROFIT</span>
-                                    </div>
-                                    <!-- /.description-block -->
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-sm-3 col-xs-6">
-                                    <div class="description-block">
-                                        <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
-                                        <h5 class="description-header">1200</h5>
-                                        <span class="description-text">GOAL COMPLETIONS</span>
-                                    </div>
-                                    <!-- /.description-block -->
+                                <div class="col-md-12">
+                                    <iframe style="overflow:hidden;height:800px;width:100%"
+                                            src="https://app.powerbi.com/view?r=eyJrIjoiOTRlOTE4YTYtNWUxNy00NmRjLTk5MWMtNDZmMmI1NTVlMjJmIiwidCI6ImQzMTI4N2U3LWZjN2ItNDVhZC04MTMxLThmZDVhY2ExMjNlNCIsImMiOjEwfQ%3D%3D"
+                                            frameborder="0" allowFullScreen="true">
+                                    </iframe>
                                 </div>
                             </div>
                             <!-- /.row -->
                         </div>
-                        <!-- /.box-footer -->
+
                     </div>
                     <!-- /.box -->
                 </div>

@@ -469,7 +469,7 @@
         this.draw = function () {}; // on change / on release
         this.clear = function () { this._clear(); };
 
-        // Utils
+        // utils
         this.h2rgba = function (h, a) {
             var rgb;
             h = h.substring(1,7)

@@ -46,11 +46,11 @@ require_once 'utils/Redirect.php';
 
         <form action="logInAuthenticator.php" method="post">
             <div class="form-group has-feedback">
-                <input type="text" name="username" class="form-control" placeholder="Username">
+                <input required type="text" name="username" class="form-control" placeholder="Username">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" name="password" class="form-control" placeholder="Password">
+                <input required type="password" name="password" class="form-control" placeholder="Password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="row">
@@ -93,6 +93,7 @@ require_once 'utils/Redirect.php';
         });
     });
 </script>
+<script src="view/plugins/jQueryValidation/jquery.validate.min.js"></script>
 <script src="view/dist/js/pages/login.js"></script>
 <script>
     logIn.initialize();

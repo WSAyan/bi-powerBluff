@@ -51,7 +51,7 @@ class Crud
     public function isUserExisted($email)
     {
         $stmt = $this->conn->prepare("SELECT email from users WHERE email = ?");
-        if($stmt){
+        if ($stmt) {
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $stmt->store_result();
@@ -97,6 +97,23 @@ class Crud
                 $departments = $stmt->get_result();
                 $stmt->close();
                 return $departments;
+            } else {
+                return NULL;
+            }
+        } else {
+            echo $this->conn->error;
+        }
+    }
+
+    public function getAllClients($deptId)
+    {
+        $stmt = $this->conn->prepare("SELECT c.id,c.clientName,d.deptName FROM clients c LEFT JOIN departments d ON c.deptId = d.id WHERE c.deptId = ?");
+        if ($stmt) {
+            $stmt->bind_param("s", $deptId);
+            if ($stmt->execute()) {
+                $clients = $stmt->get_result();
+                $stmt->close();
+                return $clients;
             } else {
                 return NULL;
             }

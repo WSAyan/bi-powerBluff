@@ -1,6 +1,7 @@
 var logIn = function () {
 
     var initialize = function () {
+        //$("form").validate();
         eventListeners();
     };
 
