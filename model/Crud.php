@@ -107,13 +107,50 @@ class Crud
 
     public function getAllClients($deptId)
     {
-        $stmt = $this->conn->prepare("SELECT c.id,c.clientName,d.deptName FROM clients c LEFT JOIN departments d ON c.deptId = d.id WHERE c.deptId = ?");
+        $stmt = $this->conn->prepare("SELECT 
+                                             c.id,c.clientName,d.deptName
+                                             FROM clients c 
+                                             LEFT JOIN departments d ON c.deptId = d.id
+                                             WHERE c.deptId = ?");
         if ($stmt) {
             $stmt->bind_param("s", $deptId);
             if ($stmt->execute()) {
                 $clients = $stmt->get_result();
                 $stmt->close();
                 return $clients;
+            } else {
+                return NULL;
+            }
+        } else {
+            echo $this->conn->error;
+        }
+    }
+
+    public function getClientsBranches($clientId)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM clientbranchinfo WHERE clientId = ?");
+        if ($stmt) {
+            $stmt->bind_param("s", $clientId);
+            if ($stmt->execute()) {
+                $branches = $stmt->get_result();
+                $stmt->close();
+                return $branches;
+            } else {
+                return NULL;
+            }
+        } else {
+            echo $this->conn->error;
+        }
+    }
+
+    public function getReports()
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM reportinfo");
+        if ($stmt) {
+            if ($stmt->execute()) {
+                $reports = $stmt->get_result();
+                $stmt->close();
+                return $reports;
             } else {
                 return NULL;
             }

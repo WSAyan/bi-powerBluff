@@ -31,10 +31,10 @@ if (isset($_POST['user_type']) && isset($_POST['username']) && isset($_POST['ema
             if ($user != null) {
                 Redirect::loadPage("admin.php");
             } else {
-                echo 'Something went wrong!';
+                Redirect::loadPage("registration.php");
             }
         }
     }
 }else{
-    echo "Registration fails!";
+    Redirect::loadPage("registration.php");
 }

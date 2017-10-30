@@ -1,8 +1,23 @@
 <?php
 require_once 'model/Crud.php';
-$db = new Crud();
-$departments = $db->getAllDepartments();
-$clients = $db->getAllClients(1);
+require_once 'model/Crud.php';
+require_once 'utils/Redirect.php';
+if (isset($_POST['username']) && isset($_POST['password'])) {
+    $db = new Crud();
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $user = $db->logInAttempt($username, $password);
+    if ($user != null) {
+        $departments = $db->getAllDepartments();
+        $clients = $db->getAllClients(1);
+    } else {
+        Redirect::loadPage("login.php");
+    }
+} else {
+    Redirect::loadPage("login.php");
+}
+
+$selectedDept = null;
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,25 +25,15 @@ $clients = $db->getAllClients(1);
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>BIPortalDemo</title>
-    <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="view/bootstrap/css/bootstrap.min.css">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-    <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- jvectormap -->
     <link rel="stylesheet" href="view/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-    <!-- Theme style -->
+    <link rel="stylesheet" href="view/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="view/plugins/select2/select2.min.css">
     <link rel="stylesheet" href="view/dist/css/AdminLTE.min.css">
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="view/dist/css/skins/_all-skins.min.css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
@@ -176,6 +181,7 @@ $clients = $db->getAllClients(1);
                         $i = 0;
                         foreach ($departments as $dept) {
                             if ($i == 0) {
+                                $selectedDept = $dept['deptName'];
                                 echo "<li class='active'><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
                             } /*else {
                                 echo "<li><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
@@ -206,8 +212,9 @@ $clients = $db->getAllClients(1);
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Dashboard
-                <small>Selected Department</small>
+                <?PHP
+                echo "{$selectedDept}"
+                ?>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -217,102 +224,56 @@ $clients = $db->getAllClients(1);
 
         <!-- Main content -->
         <section class="content">
-            <!-- Info boxes -->
             <div class="row">
-                <!--<div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="fa fa-bank"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">BRAC</span>
-                            <span class="info-box-number">41,410</span>
-                        </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Clients</label>
+                        <select id="clientList" class="form-control select2" style="width: 100%;">
+                            <option value="0" selected="selected">All Clients</option>
+                            <?PHP
+                            foreach ($clients as $client) {
+                                echo "<option value='{$client['id']}'>{$client['clientName']}</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="fa fa-home"></i></span>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Branches</label>
+                        <select id="branchesList" class="form-control select2" style="width: 100%;">
+                            <option value="0" selected="selected">All Branches</option>
 
-                        <div class="info-box-content">
-                            <span class="info-box-text">SAJIDA</span>
-                            <span class="info-box-number">500</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="clearfix visible-sm-block"></div>
-
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">SAGARIKA</span>
-                            <span class="info-box-number">410</span>
-                        </div>
+                        </select>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Reports</label>
+                        <select id="reportsList" class="form-control select2" style="width: 100%;">
+                            <option value="0" selected="selected">Select Report</option>
 
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-yellow"><i class="fa fa-briefcase"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">DISA</span>
-                            <span class="info-box-number">60</span>
-                        </div>
+                        </select>
                     </div>
-                </div>-->
-                <?PHP
-                foreach ($clients as $client) {
-                    echo "<div class=\"col-md-3 col-sm-6 col-xs-12\">
-                    <div class=\"info-box\">
-                        <span class=\"info-box-icon bg-aqua\"><i class=\"fa fa-bank\"></i></span>
-
-                        <div class=\"info-box-content\">
-                            <span class=\"info-box-text\">{$client['clientName']}</span>
-                            <span class=\"info-box-number\">410</span>
-                        </div>
-                    </div>
-                    </div>";
-                }
-                ?>
+                </div>
             </div>
-            <!-- /.row -->
-
             <div class="row">
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Report</h3>
+                            <h3 class="box-title" id="biHeader"></h3>
 
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
                                             class="fa fa-minus"></i>
                                 </button>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-box-tool dropdown-toggle"
-                                            data-toggle="dropdown">
-                                        <i class="fa fa-wrench"></i></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Action</a></li>
-                                        <li><a href="#">Another action</a></li>
-                                        <li><a href="#">Something else here</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">Separated link</a></li>
-                                    </ul>
-                                </div>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                            class="fa fa-times"></i></button>
                             </div>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <iframe style="overflow:hidden;height:800px;width:100%"
+                                    <iframe style="overflow:hidden;height:600px;width:100%"
                                             src="https://app.powerbi.com/view?r=eyJrIjoiOTRlOTE4YTYtNWUxNy00NmRjLTk5MWMtNDZmMmI1NTVlMjJmIiwidCI6ImQzMTI4N2U3LWZjN2ItNDVhZC04MTMxLThmZDVhY2ExMjNlNCIsImMiOjEwfQ%3D%3D"
                                             frameborder="0" allowFullScreen="true">
                                     </iframe>
@@ -326,46 +287,47 @@ $clients = $db->getAllClients(1);
                 </div>
                 <!-- /.col -->
             </div>
-            <!-- /.row -->
-
-
-        </section>
-        <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
 
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 1.0.0
-        </div>
-        <strong>Copyright &copy; 2016 <a href="www.southtechgroup.com/">Southtech Limited</a>.</strong> All rights
-        reserved.
-    </footer>
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="www.southtechgroup.com/">Southtech Limited</a>.</strong> All rights
+    reserved.
+</footer>
 
 
 </div>
-<!-- ./wrapper -->
 
-<!-- jQuery 2.2.3 -->
 <script src="view/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
 <script src="view/bootstrap/js/bootstrap.min.js"></script>
-<!-- FastClick -->
 <script src="view/plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
 <script src="view/dist/js/app.min.js"></script>
-<!-- Sparkline -->
 <script src="view/plugins/sparkline/jquery.sparkline.min.js"></script>
-<!-- jvectormap -->
 <script src="view/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
 <script src="view/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<!-- SlimScroll 1.3.0 -->
 <script src="view/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- ChartJS 1.0.1 -->
 <script src="view/plugins/chartjs/Chart.min.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="view/dist/js/pages/dashboard2.js"></script>
-<!-- AdminLTE for demo purposes -->
+<script src="view/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="view/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="view/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <script src="view/dist/js/demo.js"></script>
+<script src="view/plugins/select2/select2.full.min.js"></script>
+<script src="view/dist/js/demo.js"></script>
+<script>
+    $(function () {
+        $(".select2").select2();
+    });
+</script>
+<script src="view/dist/js/pages/admin.js"></script>
+<script>
+    admin.initialize();
+</script>
 </body>
 </html>

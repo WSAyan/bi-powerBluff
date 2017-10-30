@@ -9,13 +9,13 @@ var reports = function () {
     };
 
     var openExcel = function() {
-        alert("Excel opened!");
         $.ajax({
             type: "post",
             url: "http://localhost:8080/BIPortalDemo/openExcel.php",
             data: {
                 'user': 'admin'
-            }
+            },
+            success: alert("Excel opened!")
         });
     };
 

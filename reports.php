@@ -185,9 +185,9 @@ $departments = $db->getAllDepartments();
                         foreach ($departments as $dept) {
                             if ($i == 0) {
                                 echo "<li class='active'><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
-                            } else {
+                            } /*else {
                                 echo "<li><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
-                            }
+                            }*/
                             $i++;
                         }
                         ?>
