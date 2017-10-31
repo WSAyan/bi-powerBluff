@@ -9,9 +9,9 @@
 require_once 'model/Crud.php';
 require_once 'utils/Redirect.php';
 
-if (isset($_POST['clientId'])) {
+if (isset($_GET['clientId'])) {
     $db = new Crud();
-    $clientId = $_POST['clientId'];
+    $clientId = $_GET['clientId'];
     $branches = $db->getClientsBranches($clientId);
     if ($branches != null) {
         $branchList = array();

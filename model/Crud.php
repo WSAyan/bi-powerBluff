@@ -143,7 +143,7 @@ class Crud
         }
     }
 
-    public function getReports()
+    public function getReportsName()
     {
         $stmt = $this->conn->prepare("SELECT * FROM reportinfo");
         if ($stmt) {
@@ -151,6 +151,48 @@ class Crud
                 $reports = $stmt->get_result();
                 $stmt->close();
                 return $reports;
+            } else {
+                return NULL;
+            }
+        } else {
+            echo $this->conn->error;
+        }
+    }
+
+    public function saveReport($reportId, $clientId, $deptId, $branchId, $reportURL, $reportName)
+    {
+        $stmt = $this->conn->prepare("INSERT INTO svaedreport(reportId, clientId, deptId, branchId, reportURL, reportName) VALUES(?, ?, ?, ?, ?, ?)");
+        if ($stmt) {
+            $stmt->bind_param("ssssss", $reportId, $clientId, $deptId, $branchId, $reportURL, $reportName);
+            $result = $stmt->execute();
+            $stmt->close();
+            if ($result) {
+                $stmt = $this->conn->prepare("SELECT * FROM svaedreport");
+                $stmt->execute();
+                $report = $stmt->get_result()->fetch_assoc();
+                $stmt->close();
+                return $report;
+            } else {
+                return false;
+            }
+        } else {
+            echo $this->conn->error;
+        }
+    }
+
+    public function showReport($reportId, $clientId, $deptId, $branchId)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM `svaedreport` WHERE clientId = ? AND branchId = ? AND reportId = ?");
+        if ($stmt) {
+            $stmt->bind_param("sss", $clientId,$branchId,$reportId);
+            if ($stmt->execute()) {
+                $report = null;
+                $reportDetails = $stmt->get_result()->fetch_assoc();
+                if($reportDetails != null){
+                    $report = $reportDetails["reportURL"];
+                }
+                $stmt->close();
+                return $report;
             } else {
                 return NULL;
             }

@@ -1,6 +1,5 @@
 <?php
 require_once 'model/Crud.php';
-require_once 'model/Crud.php';
 require_once 'utils/Redirect.php';
 if (isset($_POST['username']) && isset($_POST['password'])) {
     $db = new Crud();
@@ -273,8 +272,12 @@ $selectedDept = null;
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <iframe style="overflow:hidden;height:600px;width:100%"
+                                    <!--<iframe style="overflow:hidden;height:600px;width:100%"
                                             src="https://app.powerbi.com/view?r=eyJrIjoiOTRlOTE4YTYtNWUxNy00NmRjLTk5MWMtNDZmMmI1NTVlMjJmIiwidCI6ImQzMTI4N2U3LWZjN2ItNDVhZC04MTMxLThmZDVhY2ExMjNlNCIsImMiOjEwfQ%3D%3D"
+                                            frameborder="0" allowFullScreen="true">
+                                    </iframe>-->
+                                    <iframe id="reportURLFrame"
+                                            style="overflow:hidden;height:600px;width:100%"
                                             frameborder="0" allowFullScreen="true">
                                     </iframe>
                                 </div>
@@ -287,8 +290,9 @@ $selectedDept = null;
                 </div>
                 <!-- /.col -->
             </div>
+        </section>
     </div>
-    </section>
+
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->

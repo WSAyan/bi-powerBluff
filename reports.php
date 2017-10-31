@@ -234,7 +234,7 @@ $departments = $db->getAllDepartments();
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body no-padding">
-                            <table class="table">
+                            <table id="reportTable" class="table">
                                 <tr>
                                     <th style="width: 10px">#</th>
                                     <th>Name</th>
@@ -247,17 +247,107 @@ $departments = $db->getAllDepartments();
                                 $i = 0;
                                 foreach ($filesList as $file) {
                                     $i++;
+                                    echo "<tr id=\"{$file['name']}\" data-toggle=\"modal\" data-target=\"#reportSaveModal\">\n";
                                     echo "<td>$i</td>\n";
-                                    echo "<td>{$file['name']}</td>\n";
+                                    echo "<td id=\"reportRowName\">{$file['name']}</td>\n";
                                     echo "<td>", date('Y-m-d H:i:s', $file['lastmod']), "</td>\n";
                                     echo "<td>{$file['size']}</td>\n";
-                                    echo "<td><span class=\"label label-success\">Approved</span></td>";
+                                    echo "<td><span class=\"label label-success\" >Approved</span></td>";
                                     echo "</tr>\n";
                                 }
                                 echo "</tbody>\n";
                                 echo "</table>\n\n";
                                 ?>
+                                <div class="example-modal">
+                                    <div class="modal fade" id="reportSaveModal" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="reportModalHeader">Save Report</h4>
+                                                </div>
+                                                <div class="modal-body form-group">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>Departments</label>
+                                                                <select id="departmentsList"
+                                                                        class="form-control select2"
+                                                                        style="width: 100%;">
+                                                                    <option value="0" selected="selected">Select
+                                                                        Department
+                                                                    </option>
+                                                                    <?PHP
+                                                                    $i = 0;
+                                                                    foreach ($departments as $dept) {
+                                                                        if ($i == 0) {
+                                                                            echo "<option value='{$dept['id']}'>{$dept['deptName']}</option>";
+                                                                        }
+                                                                        $i++;
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>Clients</label>
+                                                                <select id="clientList" class="form-control select2"
+                                                                        style="width: 100%;">
+                                                                    <option value="0" selected="selected">All Clients
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>Branches</label>
+                                                                <select id="branchesList" class="form-control select2"
+                                                                        style="width: 100%;">
+                                                                    <option value="0" selected="selected">All Branches
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>Reports</label>
+                                                                <select id="reportsList" class="form-control select2"
+                                                                        style="width: 100%;">
+                                                                    <option value="0" selected="selected">Select
+                                                                        Report
+                                                                    </option>
 
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <div class="form-group">
+                                                                <label>PowerBI URL</label>
+                                                                <input id="urlInput" class="form-control" placeholder="URL"
+                                                                       type="url">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default pull-left"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                    <button id="saveReport" type="button" class="btn btn-primary" data-dismiss="modal">Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                    <!-- /.modal -->
+                                </div>
                                 <!--<tr>
                                     <td>1.</td>
                                     <td>Update software</td>
@@ -294,11 +384,9 @@ $departments = $db->getAllDepartments();
                 <!-- /.col -->
             </div>
             <!-- /.row -->
-            <!--<div class="row">
-                <div class="coll col-md-12">
-                    <iframe src="http://localhost:8080/biportaldemo/reports/PL-Example-Stage-1.xlsx" width="100%" height="500"></iframe>
-                </div>
-            </div>-->
+            <div class="row">
+
+            </div>
         </section>
         <!-- /.content -->
     </div>

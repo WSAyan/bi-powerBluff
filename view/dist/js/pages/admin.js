@@ -1,6 +1,10 @@
 var admin = function () {
-
+    var deptId = 1;
+    var clientId = null;
+    var branchId = null;
+    var reportId = null;
     var initialize = function () {
+        $('#branchesList').prop('disabled', true);
         $('#branchesList').prop('disabled', true);
         $('#reportsList').prop('disabled', true);
         $('#biHeader').text("Dashboard");
@@ -16,8 +20,22 @@ var admin = function () {
             } else {
                 $('#branchesList').prop('disabled', false);
                 $('#reportsList').prop('disabled', false);
+                clientId = selectedClientId;
                 generateBranchDropDown(selectedClientId);
+                $('#branchesList').change(function () {
+                    var selectedBranch = this.value;
+                    if (selectedBranch !== "0") {
+                        branchId = selectedBranch;
+                    }
+                });
                 generateReportsDropDown();
+                $('#reportsList').change(function () {
+                    var selectedReport = this.value;
+                    if (selectedReport !== "0") {
+                        reportId = selectedReport;
+                        showReport();
+                    }
+                });
             }
         });
 
@@ -30,7 +48,7 @@ var admin = function () {
     var generateBranchDropDown = function (clientId) {
         $.ajax({
             url: 'http://localhost:8080/biportaldemo/generateBranchList.php',
-            type: 'POST',
+            type: 'GET',
             data: {
                 clientId: clientId
             },
@@ -61,6 +79,23 @@ var admin = function () {
                         o.ReportName + '</option>';
                 });
                 $('#reportsList').append(options);
+            }
+        });
+    };
+
+    var showReport = function () {
+        $.ajax({
+            url: 'http://localhost:8080/biportaldemo/getBIReport.php',
+            type: 'POST',
+            data: {
+                'deptId': deptId,
+                'clientId': clientId,
+                'branchId': branchId,
+                'reportId': reportId
+            },
+            success: function (data) {
+                //alert(data);
+                $('#reportURLFrame').attr('src', data)
             }
         });
     };

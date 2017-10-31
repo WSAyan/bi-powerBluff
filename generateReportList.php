@@ -11,7 +11,7 @@ require_once 'utils/Redirect.php';
 
 if (isset($_GET['report'])) {
     $db = new Crud();
-    $reports = $db->getReports();
+    $reports = $db->getReportsName();
     if ($reports != null) {
         $reportsList = array();
         $j = 0;
