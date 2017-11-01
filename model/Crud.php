@@ -184,15 +184,37 @@ class Crud
     {
         $stmt = $this->conn->prepare("SELECT * FROM `svaedreport` WHERE clientId = ? AND branchId = ? AND reportId = ?");
         if ($stmt) {
-            $stmt->bind_param("sss", $clientId,$branchId,$reportId);
+            $stmt->bind_param("sss", $clientId, $branchId, $reportId);
             if ($stmt->execute()) {
                 $report = null;
                 $reportDetails = $stmt->get_result()->fetch_assoc();
-                if($reportDetails != null){
+                if ($reportDetails != null) {
                     $report = $reportDetails["reportURL"];
                 }
                 $stmt->close();
                 return $report;
+            } else {
+                return NULL;
+            }
+        } else {
+            echo $this->conn->error;
+        }
+    }
+
+    public function getSavedReports()
+    {
+        $stmt = $this->conn->prepare("SELECT * from svaedreport");
+        if ($stmt) {
+            if ($stmt->execute()) {
+                $savedReports = array();
+                $i = 0;
+                $reports = $stmt->get_result();
+                while ($report = $reports->fetch_assoc()) {
+                    $savedReports[$i] = $report["reportName"];
+                    $i++;
+                }
+                $stmt->close();
+                return $savedReports;
             } else {
                 return NULL;
             }

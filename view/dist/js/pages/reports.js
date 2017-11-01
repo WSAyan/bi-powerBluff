@@ -139,6 +139,7 @@ var reports = function () {
 
     var saveReport = function () {
         reportURL = $("#urlInput").val();
+        reportName = $('#reportModalHeader').text();
         $.ajax({
             url: "http://localhost:8080/BIPortalDemo/saveBIReport.php",
             type: "POST",
@@ -152,6 +153,7 @@ var reports = function () {
             },
             success: function (data) {
                 alert("Report Saved");
+                window.location.reload();
             }
         });
     };

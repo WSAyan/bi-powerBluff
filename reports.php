@@ -10,6 +10,7 @@ require_once 'model/Crud.php';
 $db = new Crud();
 $filesList = OpenDirectory::getFileList("reports");
 $departments = $db->getAllDepartments();
+$savedReports = $db->getSavedReports();
 ?>
 
 <!DOCTYPE html>
@@ -252,7 +253,11 @@ $departments = $db->getAllDepartments();
                                     echo "<td id=\"reportRowName\">{$file['name']}</td>\n";
                                     echo "<td>", date('Y-m-d H:i:s', $file['lastmod']), "</td>\n";
                                     echo "<td>{$file['size']}</td>\n";
-                                    echo "<td><span class=\"label label-success\" >Approved</span></td>";
+                                    if (in_array($file['name'], $savedReports)) {
+                                        echo "<td><span id=\"statusSpan\" class=\"label label-success\" >Saved</span></td>";
+                                    } else {
+                                        echo "<td><span id=\"statusSpan\" class=\"label label-warning\" >Pending</span></td>";
+                                    }
                                     echo "</tr>\n";
                                 }
                                 echo "</tbody>\n";
@@ -328,7 +333,8 @@ $departments = $db->getAllDepartments();
                                                         <div class="col-md-8">
                                                             <div class="form-group">
                                                                 <label>PowerBI URL</label>
-                                                                <input id="urlInput" class="form-control" placeholder="URL"
+                                                                <input id="urlInput" class="form-control"
+                                                                       placeholder="URL"
                                                                        type="url">
                                                             </div>
                                                         </div>
@@ -338,7 +344,8 @@ $departments = $db->getAllDepartments();
                                                     <button type="button" class="btn btn-default pull-left"
                                                             data-dismiss="modal">Close
                                                     </button>
-                                                    <button id="saveReport" type="button" class="btn btn-primary" data-dismiss="modal">Save
+                                                    <button id="saveReport" type="button" class="btn btn-primary"
+                                                            data-dismiss="modal">Save
                                                     </button>
                                                 </div>
                                             </div>

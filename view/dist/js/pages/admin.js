@@ -94,7 +94,6 @@ var admin = function () {
                 'reportId': reportId
             },
             success: function (data) {
-                //alert(data);
                 $('#reportURLFrame').attr('src', data)
             }
         });
