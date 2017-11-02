@@ -196,6 +196,7 @@ $savedReports = $db->getSavedReports();
                 </li>
 
                 <li><a href="#"><i class="fa fa-book"></i> <span>Create Report</span></a></li>
+                <li><a href="designReport.php"><i class="fa fa-pencil"></i> <span>Design Report</span></a></li>
             </ul>
         </section>
         <!-- /.sidebar -->

@@ -1,22 +1,14 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: wahid.sadique
+ * Date: 11/2/2017
+ * Time: 12:40 PM
+ */
+require_once 'utils/OpenDirectory.php';
 require_once 'model/Crud.php';
-require_once 'utils/Redirect.php';
-if (isset($_POST['username']) && isset($_POST['password'])) {
-    $db = new Crud();
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $user = $db->logInAttempt($username, $password);
-    if ($user != null) {
-        $departments = $db->getAllDepartments();
-        $clients = $db->getAllClients(1);
-    } else {
-        Redirect::loadPage("login.php");
-    }
-} else {
-    Redirect::loadPage("login.php");
-}
-
-$selectedDept = null;
+$db = new Crud();
+$departments = $db->getAllDepartments();
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,15 +16,21 @@ $selectedDept = null;
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>BIPortalDemo</title>
+
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
     <link rel="stylesheet" href="view/bootstrap/css/bootstrap.min.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
     <link rel="stylesheet" href="view/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-    <link rel="stylesheet" href="view/plugins/iCheck/all.css">
-    <link rel="stylesheet" href="view/plugins/select2/select2.min.css">
+
     <link rel="stylesheet" href="view/dist/css/AdminLTE.min.css">
+
     <link rel="stylesheet" href="view/dist/css/skins/_all-skins.min.css">
+
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
@@ -168,7 +166,7 @@ $selectedDept = null;
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
-                <li class="active treeview">
+                <li class="treeview">
                     <a href="#">
                         <i class="fa fa-dashboard"></i> <span>Dashboards</span>
                         <span class="pull-right-container">
@@ -180,7 +178,6 @@ $selectedDept = null;
                         $i = 0;
                         foreach ($departments as $dept) {
                             if ($i == 0) {
-                                $selectedDept = $dept['deptName'];
                                 echo "<li class='active'><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
                             } /*else {
                                 echo "<li><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
@@ -192,7 +189,7 @@ $selectedDept = null;
                 </li>
 
                 <li><a href="reports.php"><i class="fa fa-book"></i> <span>Create Report</span></a></li>
-                <li><a href="designReport.php"><i class="fa fa-pencil"></i> <span>Design Report</span></a></li>
+                <li><a href="#"><i class="fa fa-pencil"></i> <span>Design Report</span></a></li>
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -202,42 +199,15 @@ $selectedDept = null;
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-                <?PHP
-                echo "{$selectedDept}"
-                ?>
-            </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dashboard</li>
+                <li class="active">Design Report</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Clients</label>
-                        <select id="clientList" class="form-control select2" style="width: 100%;">
-                            <option value="0" selected="selected">All Clients</option>
-                            <?PHP
-                            foreach ($clients as $client) {
-                                echo "<option value='{$client['id']}'>{$client['clientName']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Branches</label>
-                        <select id="branchesList" class="form-control select2" style="width: 100%;">
-                            <option value="0" selected="selected">All Branches</option>
-
-                        </select>
-                    </div>
-                </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Reports</label>
@@ -248,82 +218,52 @@ $selectedDept = null;
                     </div>
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-md-12">
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title" id="biHeader"></h3>
 
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                            class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <!--<iframe style="overflow:hidden;height:600px;width:100%"
-                                            src="https://app.powerbi.com/view?r=eyJrIjoiOTRlOTE4YTYtNWUxNy00NmRjLTk5MWMtNDZmMmI1NTVlMjJmIiwidCI6ImQzMTI4N2U3LWZjN2ItNDVhZC04MTMxLThmZDVhY2ExMjNlNCIsImMiOjEwfQ%3D%3D"
-                                            frameborder="0" allowFullScreen="true">
-                                    </iframe>-->
-                                    <iframe id="reportURLFrame"
-                                            style="overflow:hidden;height:600px;width:100%"
-                                            frameborder="0" allowFullScreen="true">
-                                    </iframe>
-                                </div>
-                            </div>
-                            <!-- /.row -->
-                        </div>
-
-                    </div>
-                    <!-- /.box -->
-                </div>
-                <!-- /.col -->
             </div>
         </section>
-    </div>
 
-    <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
-
-<footer class="main-footer">
-    <div class="pull-right hidden-xs">
-        <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2016 <a href="www.southtechgroup.com/">Southtech Limited</a>.</strong> All rights
-    reserved.
-</footer>
+    <!-- /.content-wrapper -->
+
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 1.0.0
+        </div>
+        <strong>Copyright &copy; 2016 <a href="www.southtechgroup.com/">Southtech Limited</a>.</strong> All rights
+        reserved.
+    </footer>
 
 
 </div>
+<!-- ./wrapper -->
 
+<!-- jQuery 2.2.3 -->
 <script src="view/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
 <script src="view/bootstrap/js/bootstrap.min.js"></script>
+<!-- FastClick -->
 <script src="view/plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
 <script src="view/dist/js/app.min.js"></script>
+<!-- Sparkline -->
 <script src="view/plugins/sparkline/jquery.sparkline.min.js"></script>
+<!-- jvectormap -->
 <script src="view/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
 <script src="view/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<!-- SlimScroll 1.3.0 -->
 <script src="view/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- ChartJS 1.0.1 -->
 <script src="view/plugins/chartjs/Chart.min.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="view/dist/js/pages/dashboard2.js"></script>
-<script src="view/plugins/input-mask/jquery.inputmask.js"></script>
-<script src="view/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="view/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="view/dist/js/jquery.nestable.js"></script>
 <script src="view/dist/js/demo.js"></script>
-<script src="view/plugins/select2/select2.full.min.js"></script>
-<script src="view/dist/js/demo.js"></script>
+<script src="view/dist/js/pages/designReport.js"></script>
 <script>
-    $(function () {
-        $(".select2").select2();
-    });
-</script>
-<script src="view/dist/js/pages/admin.js"></script>
-<script>
-    admin.initialize();
+    designReport.initialize();
 </script>
 </body>
 </html>

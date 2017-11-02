@@ -8,7 +8,7 @@
 
 require_once 'model/Crud.php';
 require_once 'utils/Redirect.php';
-
+$defaultReport = "http://localhost:8080/BIPortalDemo/reportNotFound.php";
 if (isset($_POST['deptId']) && isset($_POST['clientId']) && isset($_POST['branchId']) && isset($_POST['reportId'])) {
     $db = new Crud();
     $deptId = $_POST['deptId'];
@@ -20,10 +20,8 @@ if (isset($_POST['deptId']) && isset($_POST['clientId']) && isset($_POST['branch
     if ($reportURL != null) {
         echo $reportURL;
     } else {
-        Redirect::loadPage("login.php");
-        //echo $reportURL;
+        echo $defaultReport;
     }
 } else {
-    Redirect::loadPage("login.php");
-    //echo "post error";
+    echo $defaultReport;
 }

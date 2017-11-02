@@ -3,6 +3,8 @@ var admin = function () {
     var clientId = null;
     var branchId = null;
     var reportId = null;
+    var defaultReport = "http://localhost:8080/BIPortalDemo/reportNotFound.php";
+
     var initialize = function () {
         $('#branchesList').prop('disabled', true);
         $('#branchesList').prop('disabled', true);
@@ -94,7 +96,10 @@ var admin = function () {
                 'reportId': reportId
             },
             success: function (data) {
-                $('#reportURLFrame').attr('src', data)
+                $('#reportURLFrame').attr('src', data);
+            },
+            fail: function () {
+                $('#reportURLFrame').attr('src', defaultReport);
             }
         });
     };
