@@ -220,7 +220,9 @@ $departments = $db->getAllDepartments();
             </div>
 
             <div class="row">
-
+                <div id="addedElements">
+                    <input class="level_1" type="button" value="Add Navigation"/>
+                </div>
             </div>
         </section>
 

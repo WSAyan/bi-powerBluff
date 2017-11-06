@@ -9,10 +9,60 @@ var designReport = function () {
     var initialize = function () {
         generateReportsDropDown();
         eventListeners();
+        nestable();
     };
 
     var eventListeners = function () {
 
+    };
+
+    var nestable = function () {
+        $('.level_1').on('click', spawn);
+
+        function spawn() {
+            // check level
+            var level = stripLevel(this.className);
+            if (level !== '') {
+                var countOthers = this.parentNode.querySelectorAll("[class^='level_" + level + "']").length;
+                var x = wrapElement(level, countOthers);
+                if (level.length == 1) {
+                    $('#addedElements').append(x);
+                } else {
+                    //x.insertAfter(this);
+                    $(this).parent().append(x);
+                }
+            }
+        }
+
+        // strip level
+        var stripLevel = function (className) {
+            var index = className.indexOf('_');
+            if (index > -1) {
+                return className.substr(index + 1);
+            } else {
+                return '';
+            }
+        };
+
+        // wrapper element
+        var wrapElement = function (level, number) {
+            var div = $('<div></div>');
+            if (level.length == 1) {
+                // it's parent
+                var input = $('<input type="text" name="foo_" />');
+                div.append(input);
+            } else {
+                // it's child
+                var span = $('<span>child level ' + level + '-' + number + '</span>');
+                div.append(span);
+            }
+            // add button
+            var button = $('<input class="level_' + level + '-' + number + '"  type="button" value="Add Navigation" />');
+            button.on('click', spawn);
+            div.append(button);
+            div.css('margin-left', (level.length * 10) + 'px');
+            return div;
+        };
     };
 
     var generateReportsDropDown = function () {
