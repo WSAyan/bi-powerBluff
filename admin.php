@@ -1,12 +1,10 @@
 <?php
 require_once 'model/Crud.php';
 require_once 'utils/Redirect.php';
-if (isset($_POST['username']) && isset($_POST['password'])) {
-    $db = new Crud();
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $user = $db->logInAttempt($username, $password);
-    if ($user != null) {
+session_start();
+if (isset($_SESSION["sid"])) {
+    if ($_SESSION["sid"] == "1") {
+        $db = new Crud();
         $departments = $db->getAllDepartments();
         $clients = $db->getAllClients(1);
     } else {

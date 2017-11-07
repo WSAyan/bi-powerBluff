@@ -44,7 +44,7 @@ require_once 'utils/Redirect.php';
     <div class="login-box-body">
         <p class="login-box-msg">Sign In or Register</p>
 
-        <form action="admin.php" method="post">
+        <form action="logInAuthenticator.php" method="post">
             <div class="form-group has-feedback">
                 <input required type="text" name="username" class="form-control" placeholder="Username">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>

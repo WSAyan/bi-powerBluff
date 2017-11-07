@@ -9,14 +9,44 @@ var designReport = function () {
     var initialize = function () {
         generateReportsDropDown();
         eventListeners();
-        nestable();
+        normalNestable();
+        dragNestable();
     };
 
     var eventListeners = function () {
 
     };
 
-    var nestable = function () {
+    var dragNestable = function () {
+        var updateOutput = function (e) {
+            var list = e.length ? e : $(e.target),
+                output = list.data('output');
+            if (window.JSON) {
+                output.val(window.JSON.stringify(list.nestable('serialize')));
+            } else {
+                output.val('JSON browser support required for this demo.');
+            }
+        };
+
+        $('#nestable').nestable({
+            group: 1
+        }).on('change', updateOutput);
+
+        updateOutput($('#nestable').data('output', $('#nestable-output')));
+
+        /*$('#nestable-menu').on('click', function (e) {
+            var target = $(e.target),
+                action = target.data('action');
+            if (action === 'expand-all') {
+                $('.dd').nestable('expandAll');
+            }
+            if (action === 'collapse-all') {
+                $('.dd').nestable('collapseAll');
+            }
+        });*/
+    };
+
+    var normalNestable = function () {
         $('.level_1').on('click', spawn);
 
         function spawn() {

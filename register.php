@@ -29,12 +29,15 @@ if (isset($_POST['user_type']) && isset($_POST['username']) && isset($_POST['ema
         if(!$isExists){
             $user = $db->storeUser($userTypeCode, $username, $email, $password);
             if ($user != null) {
-                Redirect::loadPage("admin.php");
+                Redirect::loadPage("login.php");
+                exit();
             } else {
                 Redirect::loadPage("registration.php");
+                exit();
             }
         }
     }
 }else{
     Redirect::loadPage("registration.php");
+    exit();
 }

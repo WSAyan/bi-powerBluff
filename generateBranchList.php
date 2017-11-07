@@ -23,7 +23,9 @@ if (isset($_GET['clientId'])) {
         echo json_encode($branchList);
     } else {
         Redirect::loadPage("login.php");
+        exit();
     }
 } else {
     Redirect::loadPage("login.php");
+    exit();
 }

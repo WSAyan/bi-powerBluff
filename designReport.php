@@ -7,8 +7,18 @@
  */
 require_once 'utils/OpenDirectory.php';
 require_once 'model/Crud.php';
-$db = new Crud();
-$departments = $db->getAllDepartments();
+require_once 'utils/Redirect.php';
+session_start();
+if (isset($_SESSION['sid'])) {
+    if ($_SESSION["sid"] == "1") {
+        $db = new Crud();
+        $departments = $db->getAllDepartments();
+    } else {
+        Redirect::loadPage("login.php");
+    }
+} else {
+    Redirect::loadPage("login.php");
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,18 +28,13 @@ $departments = $db->getAllDepartments();
     <title>BIPortalDemo</title>
 
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
     <link rel="stylesheet" href="view/bootstrap/css/bootstrap.min.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-
     <link rel="stylesheet" href="view/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-
     <link rel="stylesheet" href="view/dist/css/AdminLTE.min.css">
-
     <link rel="stylesheet" href="view/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="view/dist/css/jquery.nestable.css">
 
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -219,9 +224,58 @@ $departments = $db->getAllDepartments();
                 </div>
             </div>
 
-            <div class="row">
+            <!--<div class="row">
                 <div id="addedElements">
                     <input class="level_1" type="button" value="Add Navigation"/>
+                </div>
+            </div>-->
+            <div class="row">
+                <textarea id="nestable-output"></textarea>
+            </div>
+            <div class="row">
+                <div class="dd" id="nestable">
+                    <ol class="dd-list">
+                        <li class="dd-item" data-id="1">
+                            <div class="dd-handle">Item 1</div>
+                        </li>
+                        <li class="dd-item" data-id="2">
+                            <div class="dd-handle">Item 2</div>
+                            <ol class="dd-list">
+                                <li class="dd-item" data-id="3">
+                                    <div class="dd-handle">Item 3</div>
+                                </li>
+                                <li class="dd-item" data-id="4">
+                                    <div class="dd-handle">Item 4</div>
+                                </li>
+                                <li class="dd-item" data-id="5">
+                                    <div class="dd-handle">Item 5</div>
+                                    <ol class="dd-list">
+                                        <li class="dd-item" data-id="6">
+                                            <div class="dd-handle">Item 6</div>
+                                        </li>
+                                        <li class="dd-item" data-id="7">
+                                            <div class="dd-handle">Item 7</div>
+                                        </li>
+                                        <li class="dd-item" data-id="8">
+                                            <div class="dd-handle">Item 8</div>
+                                        </li>
+                                    </ol>
+                                </li>
+                                <li class="dd-item" data-id="9">
+                                    <div class="dd-handle">Item 9</div>
+                                </li>
+                                <li class="dd-item" data-id="10">
+                                    <div class="dd-handle">Item 10</div>
+                                </li>
+                            </ol>
+                        </li>
+                        <li class="dd-item" data-id="11">
+                            <div class="dd-handle">Item 11</div>
+                        </li>
+                        <li class="dd-item" data-id="12">
+                            <div class="dd-handle">Item 12</div>
+                        </li>
+                    </ol>
                 </div>
             </div>
         </section>

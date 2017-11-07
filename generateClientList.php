@@ -23,7 +23,9 @@ if (isset($_GET['deptId'])) {
         echo json_encode($clientList);
     } else {
         Redirect::loadPage("login.php");
+        exit();
     }
 } else {
     Redirect::loadPage("login.php");
+    exit();
 }

@@ -12,6 +12,7 @@ if (isset($_POST['user'])) {
     }
 } else {
     Redirect::loadPage("login.php");
+    exit();
 }
 
 function openExcel()

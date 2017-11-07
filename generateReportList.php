@@ -22,7 +22,9 @@ if (isset($_GET['report'])) {
         echo json_encode($reportsList);
     } else {
         Redirect::loadPage("login.php");
+        exit();
     }
 } else {
     Redirect::loadPage("login.php");
+    exit();
 }

@@ -7,10 +7,19 @@
  */
 require_once 'utils/OpenDirectory.php';
 require_once 'model/Crud.php';
-$db = new Crud();
-$filesList = OpenDirectory::getFileList("reports");
-$departments = $db->getAllDepartments();
-$savedReports = $db->getSavedReports();
+session_start();
+if (isset($_SESSION['sid'])) {
+    if ($_SESSION["sid"] == "1") {
+        $db = new Crud();
+        $filesList = OpenDirectory::getFileList("reports");
+        $departments = $db->getAllDepartments();
+        $savedReports = $db->getSavedReports();
+    } else {
+        Redirect::loadPage("login.php");
+    }
+} else {
+    Redirect::loadPage("login.php");
+}
 ?>
 
 <!DOCTYPE html>
