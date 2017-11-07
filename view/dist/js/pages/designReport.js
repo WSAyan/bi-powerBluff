@@ -9,12 +9,20 @@ var designReport = function () {
     var initialize = function () {
         generateReportsDropDown();
         eventListeners();
-        normalNestable();
-        dragNestable();
+        //normalNestable();
+        //dragNestable();
+        customNestable();
     };
 
     var eventListeners = function () {
 
+    };
+
+    var customNestable = function () {
+        $('#nestable').nestable({
+            maxDepth: 5
+        })
+            .on('change', updateOutput);
     };
 
     var dragNestable = function () {

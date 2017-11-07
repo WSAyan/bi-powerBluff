@@ -25,7 +25,7 @@ if (isset($_SESSION['sid'])) {
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>BIPortalDemo</title>
+    <title>BIPortal</title>
 
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="view/bootstrap/css/bootstrap.min.css">
@@ -35,6 +35,7 @@ if (isset($_SESSION['sid'])) {
     <link rel="stylesheet" href="view/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="view/dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="view/dist/css/jquery.nestable.css">
+    <link rel="stylesheet" href="view/dist/css/style.css">
 
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -233,7 +234,7 @@ if (isset($_SESSION['sid'])) {
                 <textarea id="nestable-output"></textarea>
             </div>
             <div class="row">
-                <div class="dd" id="nestable">
+                <!--<div class="dd" id="nestable">
                     <ol class="dd-list">
                         <li class="dd-item" data-id="1">
                             <div class="dd-handle">Item 1</div>
@@ -276,6 +277,52 @@ if (isset($_SESSION['sid'])) {
                             <div class="dd-handle">Item 12</div>
                         </li>
                     </ol>
+                </div>-->
+                <div class="col-md-6">
+                    <h3>Menu</h3>
+                    <div class="dd nestable" id="nestable">
+                        <ol class="dd-list">
+                            <li class="dd-item" data-id="1" data-name="Item 1" data-slug="item-slug-1" data-new="0"
+                                data-deleted="0">
+                                <div class="dd-handle">Item 1</div>
+                                <span class="button-delete btn btn-default btn-xs pull-right"
+                                      data-owner-id="1">
+                  <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+                </span>
+                                <span class="button-edit btn btn-default btn-xs pull-right"
+                                      data-owner-id="1">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <form class="form-inline" id="menu-add">
+                        <h3>Add new menu item</h3>
+                        <div class="form-group">
+                            <label for="addInputName">Name</label>
+                            <input type="text" class="form-control" id="addInputName" placeholder="Item name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addInputSlug">Slug</label>
+                            <input type="text" class="form-control" id="addInputSlug" placeholder="item-slug" required>
+                        </div>
+                        <button class="btn btn-info" id="addButton">Add</button>
+                    </form>
+
+                    <form class="" id="menu-editor" style="display: none;">
+                        <h3>Editing <span id="currentEditName"></span></h3>
+                        <div class="form-group">
+                            <label for="addInputName">Name</label>
+                            <input type="text" class="form-control" id="editInputName" placeholder="Item name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addInputSlug">Slug</label>
+                            <input type="text" class="form-control" id="editInputSlug" placeholder="item-slug">
+                        </div>
+                        <button class="btn btn-info" id="editButton">Edit</button>
+                    </form>
                 </div>
             </div>
         </section>
@@ -293,30 +340,22 @@ if (isset($_SESSION['sid'])) {
 
 
 </div>
-<!-- ./wrapper -->
 
-<!-- jQuery 2.2.3 -->
+
+
 <script src="view/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
 <script src="view/bootstrap/js/bootstrap.min.js"></script>
-<!-- FastClick -->
 <script src="view/plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
 <script src="view/dist/js/app.min.js"></script>
-<!-- Sparkline -->
 <script src="view/plugins/sparkline/jquery.sparkline.min.js"></script>
-<!-- jvectormap -->
 <script src="view/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
 <script src="view/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<!-- SlimScroll 1.3.0 -->
 <script src="view/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- ChartJS 1.0.1 -->
 <script src="view/plugins/chartjs/Chart.min.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="view/dist/js/pages/dashboard2.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="view/dist/js/jquery.nestable.js"></script>
 <script src="view/dist/js/demo.js"></script>
+<script src="view/plugins/jquery.nestable.js"></script>
+<script src="view/plugins/jquery.nestable++.js"></script>
 <script src="view/dist/js/pages/designReport.js"></script>
 <script>
     designReport.initialize();
