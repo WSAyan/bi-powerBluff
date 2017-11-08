@@ -10,6 +10,7 @@ require_once 'model/Crud.php';
 require_once 'utils/Redirect.php';
 session_start();
 $username = null;
+$departments = null;
 if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
     if ($_SESSION["sid"] == "admin") {
         $db = new Crud();
