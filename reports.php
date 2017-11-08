@@ -7,13 +7,16 @@
  */
 require_once 'utils/OpenDirectory.php';
 require_once 'model/Crud.php';
+require_once 'utils/Redirect.php';
 session_start();
-if (isset($_SESSION['sid'])) {
-    if ($_SESSION["sid"] == "1") {
+$username = null;
+if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
+    if ($_SESSION["sid"] == "admin") {
         $db = new Crud();
         $filesList = OpenDirectory::getFileList("reports");
         $departments = $db->getAllDepartments();
         $savedReports = $db->getSavedReports();
+        $username = $_SESSION["user"];
     } else {
         Redirect::loadPage("login.php");
     }
@@ -42,22 +45,15 @@ if (isset($_SESSION['sid'])) {
 <div class="wrapper">
 
     <header class="main-header">
-
-        <!-- Logo -->
         <a href="admin.php" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>BI</b>P</span>
-            <!-- logo for regular state and mobile devices -->
             <span class="logo-lg"><b>BI</b>Portal</span>
         </a>
 
-        <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
-            <!-- Sidebar toggle button-->
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
             </a>
-            <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li class="dropdown notifications-menu">
@@ -68,7 +64,6 @@ if (isset($_SESSION['sid'])) {
                         <ul class="dropdown-menu">
                             <li class="header">You have 10 notifications</li>
                             <li>
-                                <!-- inner menu: contains the actual data -->
                                 <ul class="menu">
                                     <li>
                                         <a href="#">
@@ -102,11 +97,12 @@ if (isset($_SESSION['sid'])) {
                             <li class="footer"><a href="#">View all</a></li>
                         </ul>
                     </li>
-                    <!-- Tasks: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="view/dist/img/avatar04.png" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Administrator</span>
+                            <span class="hidden-xs"><?PHP
+                                echo "{$username}"
+                                ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -114,26 +110,14 @@ if (isset($_SESSION['sid'])) {
                                 <img src="view/dist/img/avatar04.png" class="img-circle" alt="User Image">
 
                                 <p>
-                                    Administrator
+                                    <?PHP
+                                    echo "{$username}";
+                                    ?>
                                     <small>Southtech Limited</small>
                                 </p>
                             </li>
-                            <!-- Menu Body -->
-                            <li class="user-body">
-                                <div class="row">
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Followers</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Sales</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Friends</a>
-                                    </div>
-                                </div>
-                                <!-- /.row -->
-                            </li>
-                            <!-- Menu Footer-->
+
+
                             <li class="user-footer">
                                 <div class="pull-left">
                                     <a href="#" class="btn btn-default btn-flat">Profile</a>
@@ -144,7 +128,6 @@ if (isset($_SESSION['sid'])) {
                             </li>
                         </ul>
                     </li>
-                    <!-- Control Sidebar Toggle Button -->
                     <li>
                         <a href="index.php"><i class="fa fa-power-off"></i></a>
                     </li>
@@ -152,11 +135,8 @@ if (isset($_SESSION['sid'])) {
             </div>
         </nav>
     </header>
-    <!-- Left side column. contains the logo and sidebar -->
     <aside class="main-sidebar">
-        <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-            <!-- search form -->
             <form action="#" method="get" class="sidebar-form">
                 <div class="input-group">
                     <input type="text" name="q" class="form-control" placeholder="Search...">
@@ -166,8 +146,6 @@ if (isset($_SESSION['sid'])) {
               </span>
                 </div>
             </form>
-            <!-- /.search form -->
-            <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li class="treeview">
                     <a href="#">
@@ -195,14 +173,10 @@ if (isset($_SESSION['sid'])) {
                 <li><a href="designReport.php"><i class="fa fa-pencil"></i> <span>Design Report</span></a></li>
             </ul>
         </section>
-        <!-- /.sidebar -->
     </aside>
 
-    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
         <section class="content-header">
-
             <button type="button" id="createReport" class="btn btn-block btn-info" style="width: 150px">
                 Create Report
             </button>
@@ -212,7 +186,6 @@ if (isset($_SESSION['sid'])) {
             </ol>
         </section>
 
-        <!-- Main content -->
         <section class="content">
             <div class="row">
                 <div class="col-md-12">
@@ -346,11 +319,8 @@ if (isset($_SESSION['sid'])) {
                                                     </button>
                                                 </div>
                                             </div>
-                                            <!-- /.modal-content -->
                                         </div>
-                                        <!-- /.modal-dialog -->
                                     </div>
-                                    <!-- /.modal -->
                                 </div>
                                 <!--<tr>
                                     <td>1.</td>
@@ -382,19 +352,14 @@ if (isset($_SESSION['sid'])) {
                                 </tr>-->
                             </table>
                         </div>
-                        <!-- /.box-body -->
                     </div>
                 </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
             <div class="row">
 
             </div>
         </section>
-        <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
 
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
@@ -406,29 +371,14 @@ if (isset($_SESSION['sid'])) {
 
 
 </div>
-<!-- ./wrapper -->
-
-<!-- jQuery 2.2.3 -->
 <script src="view/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
 <script src="view/bootstrap/js/bootstrap.min.js"></script>
-<!-- FastClick -->
 <script src="view/plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
 <script src="view/dist/js/app.min.js"></script>
-<!-- Sparkline -->
 <script src="view/plugins/sparkline/jquery.sparkline.min.js"></script>
-<!-- jvectormap -->
 <script src="view/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
 <script src="view/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<!-- SlimScroll 1.3.0 -->
 <script src="view/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- ChartJS 1.0.1 -->
-<script src="view/plugins/chartjs/Chart.min.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="view/dist/js/pages/dashboard2.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="view/dist/js/demo.js"></script>
 <script src="view/dist/js/pages/reports.js"></script>
 <script>
     reports.initialize();

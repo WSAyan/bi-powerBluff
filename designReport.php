@@ -9,10 +9,12 @@ require_once 'utils/OpenDirectory.php';
 require_once 'model/Crud.php';
 require_once 'utils/Redirect.php';
 session_start();
-if (isset($_SESSION['sid'])) {
-    if ($_SESSION["sid"] == "1") {
+$username = null;
+if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
+    if ($_SESSION["sid"] == "admin") {
         $db = new Crud();
         $departments = $db->getAllDepartments();
+        $username = $_SESSION['user'];
     } else {
         Redirect::loadPage("login.php");
     }
@@ -43,24 +45,16 @@ if (isset($_SESSION['sid'])) {
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
     <header class="main-header">
-
-        <!-- Logo -->
         <a href="admin.php" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>BI</b>P</span>
-            <!-- logo for regular state and mobile devices -->
             <span class="logo-lg"><b>BI</b>Portal</span>
         </a>
 
-        <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
-            <!-- Sidebar toggle button-->
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
             </a>
-            <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li class="dropdown notifications-menu">
@@ -71,7 +65,6 @@ if (isset($_SESSION['sid'])) {
                         <ul class="dropdown-menu">
                             <li class="header">You have 10 notifications</li>
                             <li>
-                                <!-- inner menu: contains the actual data -->
                                 <ul class="menu">
                                     <li>
                                         <a href="#">
@@ -105,38 +98,26 @@ if (isset($_SESSION['sid'])) {
                             <li class="footer"><a href="#">View all</a></li>
                         </ul>
                     </li>
-                    <!-- Tasks: style can be found in dropdown.less -->
+
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="view/dist/img/avatar04.png" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Administrator</span>
+                            <span class="hidden-xs"><?PHP
+                                echo "{$username}"
+                                ?></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <!-- User image -->
                             <li class="user-header">
                                 <img src="view/dist/img/avatar04.png" class="img-circle" alt="User Image">
 
                                 <p>
-                                    Administrator
+                                    <?PHP
+                                    echo "{$username}"
+                                    ?>
                                     <small>Southtech Limited</small>
                                 </p>
                             </li>
-                            <!-- Menu Body -->
-                            <li class="user-body">
-                                <div class="row">
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Followers</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Sales</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Friends</a>
-                                    </div>
-                                </div>
-                                <!-- /.row -->
-                            </li>
-                            <!-- Menu Footer-->
+
                             <li class="user-footer">
                                 <div class="pull-left">
                                     <a href="#" class="btn btn-default btn-flat">Profile</a>
@@ -147,7 +128,7 @@ if (isset($_SESSION['sid'])) {
                             </li>
                         </ul>
                     </li>
-                    <!-- Control Sidebar Toggle Button -->
+
                     <li>
                         <a href="index.php"><i class="fa fa-power-off"></i></a>
                     </li>
@@ -155,11 +136,8 @@ if (isset($_SESSION['sid'])) {
             </div>
         </nav>
     </header>
-    <!-- Left side column. contains the logo and sidebar -->
     <aside class="main-sidebar">
-        <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-            <!-- search form -->
             <form action="#" method="get" class="sidebar-form">
                 <div class="input-group">
                     <input type="text" name="q" class="form-control" placeholder="Search...">
@@ -169,8 +147,6 @@ if (isset($_SESSION['sid'])) {
               </span>
                 </div>
             </form>
-            <!-- /.search form -->
-            <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li class="treeview">
                     <a href="#">
@@ -198,12 +174,9 @@ if (isset($_SESSION['sid'])) {
                 <li><a href="#"><i class="fa fa-pencil"></i> <span>Design Report</span></a></li>
             </ul>
         </section>
-        <!-- /.sidebar -->
     </aside>
 
-    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
         <section class="content-header">
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -211,7 +184,6 @@ if (isset($_SESSION['sid'])) {
             </ol>
         </section>
 
-        <!-- Main content -->
         <section class="content">
             <div class="row">
                 <div class="col-md-4">
@@ -279,12 +251,12 @@ if (isset($_SESSION['sid'])) {
                     </ol>
                 </div>-->
                 <div class="col-md-6">
-                    <h3>Menu</h3>
+                    <h3>Caption</h3>
                     <div class="dd nestable" id="nestable">
                         <ol class="dd-list">
                             <li class="dd-item" data-id="1" data-name="Item 1" data-slug="item-slug-1" data-new="0"
                                 data-deleted="0">
-                                <div class="dd-handle">Item 1</div>
+                                <div class="dd-handle">Caption 1</div>
                                 <span class="button-delete btn btn-default btn-xs pull-right"
                                       data-owner-id="1">
                   <i class="fa fa-times-circle-o" aria-hidden="true"></i>
@@ -299,13 +271,13 @@ if (isset($_SESSION['sid'])) {
                 </div>
                 <div class="col-md-6">
                     <form class="form-inline" id="menu-add">
-                        <h3>Add new menu item</h3>
+                        <h3>Add new caption</h3>
                         <div class="form-group">
                             <label for="addInputName">Name</label>
                             <input type="text" class="form-control" id="addInputName" placeholder="Item name" required>
                         </div>
                         <div class="form-group">
-                            <label for="addInputSlug">Slug</label>
+                            <label for="addInputSlug">ID</label>
                             <input type="text" class="form-control" id="addInputSlug" placeholder="item-slug" required>
                         </div>
                         <button class="btn btn-info" id="addButton">Add</button>
@@ -328,7 +300,6 @@ if (isset($_SESSION['sid'])) {
         </section>
 
     </div>
-    <!-- /.content-wrapper -->
 
     <footer class="main-footer">
         <div class="pull-right hidden-xs">

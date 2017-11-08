@@ -4,11 +4,10 @@ require_once 'utils/Redirect.php';
 session_start();
 $username = null;
 if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
-    if ($_SESSION["sid"] == "admin") {
+    if ($_SESSION["sid"] == "user") {
         $db = new Crud();
-        $departments = $db->getAllDepartments();
-        $clients = $db->getAllClients(1);
-        $username = $_SESSION['user'];
+        $reports = $db->getReportsName();
+        $username = $_SESSION["user"];
     } else {
         Redirect::loadPage("login.php");
     }
@@ -16,7 +15,7 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
     Redirect::loadPage("login.php");
 }
 
-$selectedDept = null;
+$selectedReport = null;
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,7 +39,7 @@ $selectedDept = null;
 <div class="wrapper">
 
     <header class="main-header">
-        <a href="admin.php" class="logo">
+        <a href="user.php" class="logo">
             <span class="logo-mini"><b>BI</b>P</span>
             <span class="logo-lg"><b>BI</b>Portal</span>
         </a>
@@ -112,6 +111,7 @@ $selectedDept = null;
                                 </p>
                             </li>
 
+
                             <li class="user-footer">
                                 <div class="pull-left">
                                     <a href="#" class="btn btn-default btn-flat">Profile</a>
@@ -122,6 +122,7 @@ $selectedDept = null;
                             </li>
                         </ul>
                     </li>
+
                     <li>
                         <a href="index.php"><i class="fa fa-power-off"></i></a>
                     </li>
@@ -129,8 +130,11 @@ $selectedDept = null;
             </div>
         </nav>
     </header>
+
     <aside class="main-sidebar">
+
         <section class="sidebar">
+
             <form action="#" method="get" class="sidebar-form">
                 <div class="input-group">
                     <input type="text" name="q" class="form-control" placeholder="Search...">
@@ -140,6 +144,7 @@ $selectedDept = null;
               </span>
                 </div>
             </form>
+
             <ul class="sidebar-menu">
                 <li class="active treeview">
                     <a href="#">
@@ -148,34 +153,30 @@ $selectedDept = null;
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                     </a>
-                    <ul class="treeview-menu">
+                    <ul id="reportsList" class="treeview-menu">
                         <?PHP
                         $i = 0;
-                        foreach ($departments as $dept) {
+                        foreach ($reports as $report) {
                             if ($i == 0) {
-                                $selectedDept = $dept['deptName'];
-                                echo "<li class='active'><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
-                            } /*else {
-                                echo "<li><a href=\"admin.php\"><i class=\"fa fa-circle-o\"></i>{$dept['deptName']}</a></li>";
-                            }*/
+                                $selectedReport = $report['ReportName'];
+                                echo "<li><a href=\"#\"><i class=\"fa fa-circle-o\"></i>{$report['ReportName']}</a></li>";
+                            } else {
+                                echo "<li><a href=\"#\"><i class=\"fa fa-circle-o\"></i>{$report['ReportName']}</a></li>";
+                            }
                             $i++;
                         }
                         ?>
                     </ul>
                 </li>
-
-                <li><a href="reports.php"><i class="fa fa-book"></i> <span>Create Report</span></a></li>
-                <li><a href="designReport.php"><i class="fa fa-pencil"></i> <span>Design Report</span></a></li>
             </ul>
         </section>
     </aside>
 
+
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>
-                <?PHP
-                echo "{$selectedDept}"
-                ?>
+            <h1 id="biHeader">
+
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -185,66 +186,11 @@ $selectedDept = null;
 
         <section class="content">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Clients</label>
-                        <select id="clientList" class="form-control select2" style="width: 100%;">
-                            <option value="0" selected="selected">All Clients</option>
-                            <?PHP
-                            foreach ($clients as $client) {
-                                echo "<option value='{$client['id']}'>{$client['clientName']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Branches</label>
-                        <select id="branchesList" class="form-control select2" style="width: 100%;">
-                            <option value="0" selected="selected">All Branches</option>
-
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Reports</label>
-                        <select id="reportsList" class="form-control select2" style="width: 100%;">
-                            <option value="0" selected="selected">Select Report</option>
-
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-md-12">
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title" id="biHeader"></h3>
-
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                            class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <!--<iframe style="overflow:hidden;height:600px;width:100%"
-                                            src="https://app.powerbi.com/view?r=eyJrIjoiOTRlOTE4YTYtNWUxNy00NmRjLTk5MWMtNDZmMmI1NTVlMjJmIiwidCI6ImQzMTI4N2U3LWZjN2ItNDVhZC04MTMxLThmZDVhY2ExMjNlNCIsImMiOjEwfQ%3D%3D"
-                                            frameborder="0" allowFullScreen="true">
-                                    </iframe>-->
-                                    <iframe id="reportURLFrame"
-                                            style="overflow:hidden;height:600px;width:100%"
-                                            frameborder="0" allowFullScreen="true">
-                                    </iframe>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                    <iframe id="reportURLFrame"
+                            style="overflow:hidden;height:600px;width:100%"
+                            frameborder="0" allowFullScreen="true">
+                    </iframe>
                 </div>
             </div>
         </section>
@@ -284,9 +230,9 @@ $selectedDept = null;
         $(".select2").select2();
     });
 </script>
-<script src="view/dist/js/pages/admin.js"></script>
+<script src="view/dist/js/pages/user.js"></script>
 <script>
-    admin.initialize();
+    user.initialize();
 </script>
 </body>
 </html>

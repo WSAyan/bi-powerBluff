@@ -7,6 +7,9 @@
  */
 require_once 'model/Crud.php';
 require_once 'utils/Redirect.php';
+session_start();
+session_unset();
+session_destroy();
 ?>
 
 <!DOCTYPE html>

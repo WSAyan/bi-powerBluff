@@ -14,9 +14,19 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $user = $db->logInAttempt($username, $password);
     if ($user != null) {
         session_start();
-        $_SESSION["sid"] = "1";
-        //echo $_SESSION["sid"];
-        Redirect::loadPage("admin.php");
+        $userType= $user['usertype'];
+        $userName= $user['username'];
+        $_SESSION["user"] = $userName;
+        switch ($userType){
+            case "201":
+                $_SESSION["sid"] = "admin";
+                Redirect::loadPage("admin.php");
+                break;
+            case "301":
+                $_SESSION["sid"] = "user";
+                Redirect::loadPage("user.php");
+                break;
+        }
     } else {
         Redirect::loadPage("login.php");
     }
