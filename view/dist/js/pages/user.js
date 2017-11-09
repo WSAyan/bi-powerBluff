@@ -26,7 +26,7 @@ var user = function () {
     var showReport = function () {
         deptId = 1;
         clientId = 1;
-        branchId = 1;
+        branchId = 0;
         $.ajax({
             url: 'http://localhost:8080/biportaldemo/getBIReport.php',
             type: 'POST',

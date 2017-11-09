@@ -41,7 +41,6 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
 
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -254,18 +253,7 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
                     <h3>Caption</h3>
                     <div class="dd nestable" id="nestable">
                         <ol class="dd-list">
-                            <li class="dd-item" data-id="1" data-name="Item 1" data-slug="item-slug-1" data-new="0"
-                                data-deleted="0">
-                                <div class="dd-handle">Caption 1</div>
-                                <span class="button-delete btn btn-default btn-xs pull-right"
-                                      data-owner-id="1">
-                  <i class="fa fa-times-circle-o" aria-hidden="true"></i>
-                </span>
-                                <span class="button-edit btn btn-default btn-xs pull-right"
-                                      data-owner-id="1">
-                  <i class="fa fa-pencil" aria-hidden="true"></i>
-                </span>
-                            </li>
+
                         </ol>
                     </div>
                 </div>
@@ -313,7 +301,6 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
 </div>
 
 
-
 <script src="view/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="view/bootstrap/js/bootstrap.min.js"></script>
 <script src="view/plugins/fastclick/fastclick.js"></script>
@@ -325,9 +312,9 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
 <script src="view/plugins/chartjs/Chart.min.js"></script>
 <script src="view/dist/js/pages/dashboard2.js"></script>
 <script src="view/dist/js/demo.js"></script>
+<script src="view/dist/js/pages/designReport.js"></script>
 <script src="view/plugins/jquery.nestable.js"></script>
 <script src="view/plugins/jquery.nestable++.js"></script>
-<script src="view/dist/js/pages/designReport.js"></script>
 <script>
     designReport.initialize();
 </script>

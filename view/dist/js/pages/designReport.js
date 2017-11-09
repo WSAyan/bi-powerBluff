@@ -21,8 +21,7 @@ var designReport = function () {
     var customNestable = function () {
         $('#nestable').nestable({
             maxDepth: 5
-        })
-            .on('change', updateOutput);
+        }).on('change', updateOutput);
     };
 
     var dragNestable = function () {

@@ -76,7 +76,7 @@ var reports = function () {
             data: {
                 'user': 'admin'
             },
-            success: alert("Excel opened!")
+            success: alert("PowerBI Desktop opened!")
         });
     };
 

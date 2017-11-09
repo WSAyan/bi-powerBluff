@@ -17,6 +17,7 @@ if (isset($_POST['user'])) {
 
 function openExcel()
 {
-    $cmd = "C:/Program Files (x86)/Microsoft Office/Office15/EXCEL.EXE";
+    //$cmd = "C:/Program Files (x86)/Microsoft Office/Office15/EXCEL.EXE";
+    $cmd = "C:\Program Files\Microsoft Power BI Desktop RS\bin\PBIDesktop.exe";
     exec($cmd);
 }
