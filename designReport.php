@@ -196,65 +196,13 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
                 </div>
             </div>
 
-            <!--<div class="row">
-                <div id="addedElements">
-                    <input class="level_1" type="button" value="Add Navigation"/>
-                </div>
-            </div>-->
             <div class="row">
-                <textarea id="nestable-output"></textarea>
-            </div>
-            <div class="row">
-                <!--<div class="dd" id="nestable">
-                    <ol class="dd-list">
-                        <li class="dd-item" data-id="1">
-                            <div class="dd-handle">Item 1</div>
-                        </li>
-                        <li class="dd-item" data-id="2">
-                            <div class="dd-handle">Item 2</div>
-                            <ol class="dd-list">
-                                <li class="dd-item" data-id="3">
-                                    <div class="dd-handle">Item 3</div>
-                                </li>
-                                <li class="dd-item" data-id="4">
-                                    <div class="dd-handle">Item 4</div>
-                                </li>
-                                <li class="dd-item" data-id="5">
-                                    <div class="dd-handle">Item 5</div>
-                                    <ol class="dd-list">
-                                        <li class="dd-item" data-id="6">
-                                            <div class="dd-handle">Item 6</div>
-                                        </li>
-                                        <li class="dd-item" data-id="7">
-                                            <div class="dd-handle">Item 7</div>
-                                        </li>
-                                        <li class="dd-item" data-id="8">
-                                            <div class="dd-handle">Item 8</div>
-                                        </li>
-                                    </ol>
-                                </li>
-                                <li class="dd-item" data-id="9">
-                                    <div class="dd-handle">Item 9</div>
-                                </li>
-                                <li class="dd-item" data-id="10">
-                                    <div class="dd-handle">Item 10</div>
-                                </li>
-                            </ol>
-                        </li>
-                        <li class="dd-item" data-id="11">
-                            <div class="dd-handle">Item 11</div>
-                        </li>
-                        <li class="dd-item" data-id="12">
-                            <div class="dd-handle">Item 12</div>
-                        </li>
-                    </ol>
-                </div>-->
                 <div class="col-md-6">
                     <h3>Caption</h3>
                     <div class="dd nestable" id="nestable">
                         <ol class="dd-list">
-
                         </ol>
+
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -285,6 +233,14 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
                     </form>
                 </div>
             </div>
+            <div class="row output-container">
+                <div class="col-md-offset-1 col-md-10">
+                    <h2 class="text-center">Output:</h2>
+                    <form class="form">
+                        <textarea class="form-control" id="json-output" rows="5"></textarea>
+                    </form>
+                </div>
+            </div>
         </section>
 
     </div>
@@ -305,14 +261,9 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
 <script src="view/bootstrap/js/bootstrap.min.js"></script>
 <script src="view/plugins/fastclick/fastclick.js"></script>
 <script src="view/dist/js/app.min.js"></script>
-<script src="view/plugins/sparkline/jquery.sparkline.min.js"></script>
-<script src="view/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="view/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
 <script src="view/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<script src="view/plugins/chartjs/Chart.min.js"></script>
-<script src="view/dist/js/pages/dashboard2.js"></script>
-<script src="view/dist/js/demo.js"></script>
 <script src="view/dist/js/pages/designReport.js"></script>
+<script src="view/plugins/jQuery/jquery-1.11.3.min.js"></script>
 <script src="view/plugins/jquery.nestable.js"></script>
 <script src="view/plugins/jquery.nestable++.js"></script>
 <script>

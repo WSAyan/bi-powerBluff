@@ -20,7 +20,7 @@ var designReport = function () {
 
     var customNestable = function () {
         $('#nestable').nestable({
-            maxDepth: 5
+            maxDepth: 10
         }).on('change', updateOutput);
     };
 
