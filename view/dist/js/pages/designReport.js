@@ -5,6 +5,7 @@ var designReport = function () {
     var reportId = null;
     var reportURL = null;
     var reportName = null;
+    var captionList = null;
 
     var initialize = function () {
         generateReportsDropDown();
@@ -15,7 +16,12 @@ var designReport = function () {
     };
 
     var eventListeners = function () {
-
+        $('#saveDesign').click(function () {
+            var x = $('.dd').nestable('serialize');
+            captionList = JSON.stringify(x);
+            saveDesign();
+            //alert(JSON.stringify(x));
+        });
     };
 
     var customNestable = function () {
@@ -121,22 +127,18 @@ var designReport = function () {
         });
     };
 
-    var saveReport = function () {
-        reportURL = $("#urlInput").val();
-        reportName = $('#reportModalHeader').text();
+    var saveDesign = function () {
         $.ajax({
-            url: "http://localhost:8080/BIPortalDemo/saveBIReport.php",
+            url: "http://localhost:8080/BIPortalDemo/saveDesignedReport.php",
             type: "POST",
             data: {
                 'deptId': deptId,
                 'clientId': clientId,
                 'branchId': branchId,
                 'reportId': reportId,
-                'reportURL': reportURL,
-                'reportName': reportName
+                'captionList': captionList
             },
             success: function (data) {
-                alert("Report Saved");
                 window.location.reload();
             }
         });

@@ -192,8 +192,10 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
                             <option value="0" selected="selected">Select Report</option>
 
                         </select>
+                        <button id="saveDesign" class="btn btn-success">Save</button>
                     </div>
                 </div>
+
             </div>
 
             <div class="row">
@@ -233,7 +235,7 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
                     </form>
                 </div>
             </div>
-            <div class="row output-container">
+            <div hidden class="row output-container">
                 <div class="col-md-offset-1 col-md-10">
                     <h2 class="text-center">Output:</h2>
                     <form class="form">
