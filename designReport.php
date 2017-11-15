@@ -200,7 +200,7 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
 
             <div class="row">
                 <div class="col-md-6">
-                    <h3>Caption</h3>
+                    <h3>Report Template</h3>
                     <div class="dd nestable" id="nestable">
                         <ol class="dd-list">
                         </ol>

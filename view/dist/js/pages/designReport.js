@@ -19,15 +19,50 @@ var designReport = function () {
         $('#saveDesign').click(function () {
             var x = $('.dd').nestable('serialize');
             captionList = JSON.stringify(x);
-            saveDesign();
-            //alert(JSON.stringify(x));
+            alert(captionList);
+            //saveDesign();
+
         });
     };
 
     var customNestable = function () {
+        //savedList();
         $('#nestable').nestable({
             maxDepth: 10
         }).on('change', updateOutput);
+    };
+
+    var savedList = function () {
+        var obj = '[{"deleted":0,"new":1,"slug":"a","name":"as","id":"new-1"},{"deleted":0,"new":1,"slug":"sd","name":"asd","id":"new-2","children":[{"deleted":0,"new":1,"slug":"sd","name":"asd","id":"new-3"}]}]';
+        var output = '';
+
+        function buildItem(item) {
+            console.log(item.id);
+
+            var html = "<li class='dd-item' data-id='" + item.id + "'>";
+            html += "<div class='dd-handle'>" + item.name + "</div>";
+            html += "<span class=\"button-delete btn btn-default btn-xs pull-right\" data-owner-id='" + item.id + "'><i class=\"fa fa-times-circle-o\" aria-hidden=\"true\"></i></span>";
+            html += "<span class=\"button-edit btn btn-default btn-xs pull-right\" data-owner-id='" + item.id + "'><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></span>";
+
+            if (item.children) {
+
+                html += "<ol class='dd-list'>";
+                $.each(item.children, function (index, sub) {
+                    html += buildItem(sub);
+                });
+                html += "</ol>";
+
+            }
+
+            html += "</li>";
+
+            return html;
+        }
+
+        $.each(JSON.parse(obj), function (index, item) {
+            output += buildItem(item);
+        });
+        $('#nestable').html(output);
     };
 
     var dragNestable = function () {
