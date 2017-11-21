@@ -47,8 +47,8 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
 
     <header class="main-header">
         <a href="admin.php" class="logo">
-            <span class="logo-mini"><b>BI</b>P</span>
-            <span class="logo-lg"><b>BI</b>Portal</span>
+            <span class="logo-mini"><b>A</b>BI</span>
+            <span class="logo-lg"><b>ASCEND</b>BI</span>
         </a>
 
         <nav class="navbar navbar-static-top">

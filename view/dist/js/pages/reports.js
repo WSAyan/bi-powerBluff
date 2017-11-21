@@ -72,7 +72,7 @@ var reports = function () {
     var openExcel = function () {
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/BIPortalDemo/openExcel.php",
+            url: "http://192.168.100.116:8080/BIPortalDemo/openExcel.php",
             data: {
                 'user': 'admin'
             },
@@ -82,7 +82,7 @@ var reports = function () {
 
     var generateClientDropDown = function (deptId) {
         $.ajax({
-            url: 'http://localhost:8080/biportaldemo/generateClientList.php',
+            url: 'http://192.168.100.116:8080/biportaldemo/generateClientList.php',
             type: 'GET',
             data: {
                 deptId: deptId
@@ -101,7 +101,7 @@ var reports = function () {
 
     var generateBranchDropDown = function (clientId) {
         $.ajax({
-            url: 'http://localhost:8080/biportaldemo/generateBranchList.php',
+            url: 'http://192.168.100.116:8080/biportaldemo/generateBranchList.php',
             type: 'GET',
             data: {
                 clientId: clientId
@@ -120,7 +120,7 @@ var reports = function () {
 
     var generateReportsDropDown = function () {
         $.ajax({
-            url: 'http://localhost:8080/biportaldemo/generateReportList.php',
+            url: 'http://192.168.100.116:8080/biportaldemo/generateReportList.php',
             type: 'GET',
             data: {
                 report: 'report'
@@ -141,7 +141,7 @@ var reports = function () {
         reportURL = $("#urlInput").val();
         reportName = $('#reportModalHeader').text();
         $.ajax({
-            url: "http://localhost:8080/BIPortalDemo/saveBIReport.php",
+            url: "http://192.168.100.116:8080/BIPortalDemo/saveBIReport.php",
             type: "POST",
             data: {
                 'deptId': deptId,

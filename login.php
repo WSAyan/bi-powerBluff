@@ -30,7 +30,7 @@ session_destroy();
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="login.php"><b>BI</b>Portal</a>
+        <a href="login.php"><b>ASCEND</b>BI</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">

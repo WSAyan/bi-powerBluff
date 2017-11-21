@@ -28,7 +28,7 @@ $db = new Crud();
 <body class="hold-transition register-page">
 <div class="register-box">
     <div class="register-logo">
-        <a href="index.php"><b>BI</b>Portal</a>
+        <a href="index.php"><b>ASCEND</b>BI</a>
     </div>
 
     <div class="register-box-body">
