@@ -206,11 +206,11 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
                         </ol>
 
                     </div>-->
-                    <div class="dd" id="nestable3">
+                    <!--<div class="dd" id="nestable3">
                         <ol class='dd-list dd3-list'>
                             <div id="dd-empty-placeholder"></div>
                         </ol>
-                    </div>
+                    </div>-->
                     <div class="dd" id="nestable-json"></div>
                 </div>
                 <div class="col-md-6">

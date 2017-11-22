@@ -1,4 +1,5 @@
-var designReport = function () {
+var designReport;
+designReport = function () {
     var deptId = null;
     var clientId = null;
     var branchId = null;
@@ -6,7 +7,7 @@ var designReport = function () {
     var reportURL = null;
     var reportName = null;
     var captionList = null;
-    var jsonDepth = 0;
+    var maxJsonDepth = 0;
     var initialize = function () {
         generateReportsDropDown();
         eventListeners();
@@ -19,24 +20,22 @@ var designReport = function () {
             var x = $('.dd').nestable('serialize');
             captionList = JSON.stringify(x);
             alert(captionList);
-            //saveDesign();
-
         });
     };
 
     var customNestable = function () {
         nestablejson();
         //nestableLast();
-        //savedList();\
+        //savedList();
     };
 
-    function nestablejson() {
-
+    var nestablejson = function () {
         var json = '[{"id":1,"name":"aa"},{"id":2,"name":"aa"},{"id":3,"name":"aa","children":[{"id":4,"name":"aa"},{"id":5,"name":"aa"}]}]';
+        //json = '[{}]';
         var options = {
             'json': json,
             itemRenderer: function (item, content, children, options) {
-
+                console.log(item);
                 var html = "<li class='dd-item' data-id='" + item['data-id'] + "'>";
                 html += "<div class='dd-handle'>" + item['data-name'] + "</div>";
                 html += "<span class='button-delete btn btn-default btn-xs pull-right deleteItem' data-owner-id='" + item['data-id'] + "'><i class=\"fa fa-times-circle-o\" aria-hidden=\"true\"></i></span>";
@@ -49,24 +48,39 @@ var designReport = function () {
 
         $('#nestable-json').nestable(options);
 
-
-        $('.dd-item').on('click', '.deleteItem', function (ev) {
-            $('#nestable-json').nestable('remove', $(this).data('owner-id'));
-        });
-
-
         $('#addButton').click(function () {
             var itemText = $('#addInputName').val();
-            $('#nestable-json').nestable('add', {id: 0, "name": itemText});
-
+            var newId = getMaxJsonDepth(json) + 1;
+            console.log(newId);
+            $('#nestable-json').nestable('add', {"id": newId, "name": itemText});
+            maxJsonDepth = newId;
         });
 
-        jsonDepth = getDepth(json);
-        console.log(jsonDepth);
-        //$('#nestable-json').nestable('add', {"id":1,"parent_id":2,"children":[{"id":4}]});
+        $(document).on('click','.deleteItem', function () {
+            var selectedId = $(this).data('owner-id');
+            console.log(selectedId);
+            $('#nestable-json').nestable('remove', selectedId);
+        });
 
-        //$('#nestable-json').nestable('remove', 4);
-        //$('#nestable-json').nestable('replace', {"id":1,"foo":"bar"});
+    };
+
+    function getMaxJsonDepth(obj) {
+        $.each(JSON.parse(obj), function (index, item) {
+            maxJsonDepth = check(parseInt(item.id));
+            if (item.children) {
+                $.each(item.children, function (index, sub) {
+                    maxJsonDepth = check(parseInt(sub.id));
+                });
+            }
+
+            function check(x) {
+                if (x > maxJsonDepth) {
+                    maxJsonDepth = x;
+                }
+                return maxJsonDepth;
+            }
+        });
+        return maxJsonDepth;
     }
 
     var savedList = function () {
@@ -172,19 +186,6 @@ var designReport = function () {
                 $('.dd').nestable('collapseAll');
             }
         });*/
-    };
-
-    var getDepth = function (obj) {
-        var depth = 0;
-        if (obj.children) {
-            obj.children.forEach(function (d) {
-                var tmpDepth = getDepth(d)
-                if (tmpDepth > depth) {
-                    depth = tmpDepth
-                }
-            })
-        }
-        return 1 + depth
     };
 
     var generateReportsDropDown = function () {
