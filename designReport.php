@@ -201,16 +201,6 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
             <div class="row">
                 <div class="col-md-6">
                     <h3>Report Template</h3>
-                    <!--<div class="dd nestable" id="nestable">
-                        <ol class="dd-list">
-                        </ol>
-
-                    </div>-->
-                    <!--<div class="dd" id="nestable3">
-                        <ol class='dd-list dd3-list'>
-                            <div id="dd-empty-placeholder"></div>
-                        </ol>
-                    </div>-->
                     <div class="dd" id="nestable-json"></div>
                 </div>
                 <div class="col-md-6">
@@ -220,10 +210,6 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
                             <label for="addInputName">Name</label>
                             <input type="text" class="form-control" id="addInputName" placeholder="Item name" required>
                         </div>
-                        <!--<div class="form-group">
-                            <label for="addInputSlug">ID</label>
-                            <input type="text" class="form-control" id="addInputSlug" placeholder="item-slug" required>
-                        </div>-->
                         <button type="button" class="btn btn-info" id="addButton">Add</button>
                     </form>
 
@@ -271,9 +257,8 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
 <script src="view/dist/js/app.min.js"></script>
 <script src="view/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="view/dist/js/pages/designReport.js"></script>
-<script src="view/plugins/jQuery/jquery-1.11.3.min.js"></script>
+<!--<script src="view/plugins/jQuery/jquery-1.11.3.min.js"></script>-->
 <script src="view/plugins/jquery.nestable.min.js"></script>
-<!--<script src="view/plugins/jquery.nestable++.js"></script>-->
 <script>
     designReport.initialize();
 </script>

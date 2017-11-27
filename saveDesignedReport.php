@@ -16,9 +16,9 @@ if (isset($_POST['deptId']) && isset($_POST['clientId']) && isset($_POST['branch
     $reportId = $_POST['reportId'];
     $captionList = $_POST['captionList'];
 
-    $reports;
-    if ($reports != null) {
-        echo json_encode($reports);
+    $report = $db->saveReportDesign($deptId, $clientId, $branchId, $reportId, $captionList);
+    if ($report != null) {
+        echo json_encode($report);
     } else {
         Redirect::loadPage("login.php");
     }

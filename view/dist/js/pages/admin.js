@@ -1,4 +1,6 @@
 var admin = function () {
+    var baseURL = 'http://localhost:8080/biportaldemo/';
+    //var baseURL = 'http://192.168.100.116:8080/biportaldemo/';
     var deptId = 1;
     var clientId = null;
     var branchId = null;

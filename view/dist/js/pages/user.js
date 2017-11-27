@@ -1,4 +1,6 @@
 var user = function () {
+    var baseURL = 'http://localhost:8080/biportaldemo/';
+    //var baseURL = 'http://192.168.100.116:8080/biportaldemo/';
     var deptId = null;
     var clientId = null;
     var branchId = null;
@@ -28,7 +30,7 @@ var user = function () {
         clientId = 1;
         branchId = 0;
         $.ajax({
-            url: 'http://192.168.100.116:8080/biportaldemo/getBIReport.php',
+            url: baseURL + 'getBIReport.php',
             type: 'POST',
             data: {
                 'deptId': deptId,

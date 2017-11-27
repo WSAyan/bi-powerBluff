@@ -180,6 +180,28 @@ class Crud
         }
     }
 
+    public function saveReportDesign($deptId, $clientId, $branchId, $reportId, $captionList)
+    {
+        $stmt = $this->conn->prepare("INSERT INTO tempdesignedreport(deptId, clientId, branchId, reportId, captionList) VALUES(?, ?, ?, ?, ?)");
+        if ($stmt) {
+            $stmt->bind_param("sssss", $deptId, $clientId, $branchId, $reportId, $captionList);
+            $result = $stmt->execute();
+            $stmt->close();
+            if ($result) {
+                $stmt = $this->conn->prepare("SELECT * FROM tempdesignedreport WHERE reportId = ?");
+                $stmt->bind_param("s", $reportId);
+                $stmt->execute();
+                $report = $stmt->get_result()->fetch_assoc();
+                $stmt->close();
+                return $report;
+            } else {
+                return false;
+            }
+        } else {
+            echo $this->conn->error;
+        }
+    }
+
     public function showReport($reportId, $clientId, $deptId, $branchId)
     {
         $stmt = $this->conn->prepare("SELECT * FROM `svaedreport` WHERE clientId = ? AND branchId = ? AND reportId = ?");
@@ -190,6 +212,27 @@ class Crud
                 $reportDetails = $stmt->get_result()->fetch_assoc();
                 if ($reportDetails != null) {
                     $report = $reportDetails["reportURL"];
+                }
+                $stmt->close();
+                return $report;
+            } else {
+                return NULL;
+            }
+        } else {
+            echo $this->conn->error;
+        }
+    }
+
+    public function getDesignedReport($deptId, $clientId, $branchId, $reportId)
+    {
+        $stmt = $this->conn->prepare("SELECT captionList FROM tempdesignedreport WHERE deptId = ? AND clientId = ? AND branchId = ? AND reportId = ?");
+        if ($stmt) {
+            $stmt->bind_param("ssss", $deptId, $clientId, $branchId, $reportId);
+            if ($stmt->execute()) {
+                $report = null;
+                $reportDetails = $stmt->get_result()->fetch_assoc();
+                if ($reportDetails != null) {
+                    $report = $reportDetails["captionList"];
                 }
                 $stmt->close();
                 return $report;

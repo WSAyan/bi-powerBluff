@@ -1,4 +1,6 @@
 var reports = function () {
+    var baseURL = 'http://localhost:8080/biportaldemo/';
+    //var baseURL = 'http://192.168.100.116:8080/biportaldemo/';
     var deptId = null;
     var clientId = null;
     var branchId = null;
@@ -71,8 +73,8 @@ var reports = function () {
 
     var openExcel = function () {
         $.ajax({
-            type: "POST",
-            url: "http://192.168.100.116:8080/BIPortalDemo/openExcel.php",
+            url: baseURL + 'openExcel.php',
+            type: 'POST',
             data: {
                 'user': 'admin'
             },
@@ -82,7 +84,7 @@ var reports = function () {
 
     var generateClientDropDown = function (deptId) {
         $.ajax({
-            url: 'http://192.168.100.116:8080/biportaldemo/generateClientList.php',
+            url: baseURL + 'generateClientList.php',
             type: 'GET',
             data: {
                 deptId: deptId
@@ -101,7 +103,7 @@ var reports = function () {
 
     var generateBranchDropDown = function (clientId) {
         $.ajax({
-            url: 'http://192.168.100.116:8080/biportaldemo/generateBranchList.php',
+            url: baseURL + 'generateBranchList.php',
             type: 'GET',
             data: {
                 clientId: clientId
@@ -120,7 +122,7 @@ var reports = function () {
 
     var generateReportsDropDown = function () {
         $.ajax({
-            url: 'http://192.168.100.116:8080/biportaldemo/generateReportList.php',
+            url: baseURL + 'generateReportList.php',
             type: 'GET',
             data: {
                 report: 'report'
@@ -141,8 +143,8 @@ var reports = function () {
         reportURL = $("#urlInput").val();
         reportName = $('#reportModalHeader').text();
         $.ajax({
-            url: "http://192.168.100.116:8080/BIPortalDemo/saveBIReport.php",
-            type: "POST",
+            url: baseURL + 'saveBIReport.php',
+            type: 'POST',
             data: {
                 'deptId': deptId,
                 'clientId': clientId,
