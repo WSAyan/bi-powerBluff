@@ -180,7 +180,7 @@ class Crud
         }
     }
 
-    public function saveReportDesign($deptId, $clientId, $branchId, $reportId, $captionList)
+    public function saveReportDesign($deptId, $clientId, $branchId, $reportId, $captionList, $captionListWithDepth)
     {
         $stmt = $this->conn->prepare("INSERT INTO tempdesignedreport(deptId, clientId, branchId, reportId, captionList) VALUES(?, ?, ?, ?, ?)");
         if ($stmt) {

@@ -9,6 +9,7 @@ designReport = function () {
     var reportURL = null;
     var reportName = null;
     var captionList = null;
+    var captionListWithDepth = null;
     var maxJsonDepth = 0;
     var json = '[{"id":1,"name":"example"}]';
 
@@ -21,12 +22,11 @@ designReport = function () {
 
     var eventListeners = function () {
         $('#saveDesign').click(function () {
-            var x = $('.dd').nestable('serialize');
-            captionList = JSON.stringify(x);
-            //saveDesign();
-            //alert(captionList);
-            x = $('.dd').nestable('asNestedSet');
-            console.log(JSON.stringify(x));
+            var serializedData = JSON.stringify( $('#nestable-json').nestable('serialize'));
+            var dataWithDepth = JSON.stringify($('#nestable-json').nestable('toArray'));
+            captionList = serializedData;
+            captionListWithDepth = dataWithDepth;
+            saveDesign();
         });
         $("#reportsList").change(function () {
             reportId = this.value;
@@ -53,7 +53,7 @@ designReport = function () {
                 var x = $('#nestable-json').nestable('serialize');
                 json = JSON.stringify(x);
                 json = manipulateJsonOnRemoval(json, selectedId);
-                console.log("manipulated Json: " + json);
+                //console.log("manipulated Json: " + json);
                 $('#nestable-json').nestable('destroy');
                 $('#nestable-json').nestable(renderedOption());
                 maxJsonDepth = 0;
@@ -62,12 +62,12 @@ designReport = function () {
     };
 
     function renderedOption() {
-        console.log("Passed Json" + json);
+        //console.log("Passed Json" + json);
         return {
             'json': json,
             itemRenderer: function (item, content, children, options) {
-                console.log(item['data-id']);
-                var html = "<li class='dd-item' data-id='" + item['data-id'] + "' data-name='" + item['data-name'] + "'>";
+                //console.log(item['data-id']);
+                var html = "<li class='dd-item' data-name='" + item['data-name'] + "' data-id='" + item['data-id'] + "' >";
                 html += "<div class='dd-handle'>" + item['data-name'] + "</div>";
                 html += "<span class='button-delete btn btn-default btn-xs pull-right deleteItem' data-owner-id='" + item['data-id'] + "'><i class=\"fa fa-times-circle-o\" aria-hidden=\"true\"></i></span>";
                 html += "<span class='button-edit btn btn-default btn-xs pull-right editItem' data-owner-id='" + item['data-id'] + "'><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></span>";
@@ -98,21 +98,24 @@ designReport = function () {
     }
 
     function manipulateJsonOnRemoval(jsonObj, removeId) {
-        console.log("To Remove: " + removeId);
+        //console.log("To Remove: " + removeId);
         var manipulatedJson = JSON.parse(jsonObj);
         $.each(manipulatedJson, function (index, item) {
             var recentId = parseInt(item.id);
+
+            if (recentId > removeId) {
+                item.id = recentId - 1;
+            }
             if (item.children) {
                 $.each(item.children, function (index, sub) {
                     recentId = parseInt(sub.id);
+                    if (recentId > removeId) {
+                        sub.id = recentId - 1;
+                    }
                 });
             }
-            console.log("Before Removing: " + recentId);
-            if (recentId > removeId) {
-                recentId--;
-            }
-            item.id = recentId;
-            console.log("id: " + item.id);
+            //console.log("Before Removing: " + recentId);
+            //console.log("id: " + item.id);
         });
 
         return JSON.stringify(manipulatedJson);
@@ -146,11 +149,15 @@ designReport = function () {
                 'clientId': clientId,
                 'branchId': branchId,
                 'reportId': reportId,
-                'captionList': captionList
+                'captionList': captionList,
+                'captionListWithDepth': captionListWithDepth
             },
             success: function (data) {
                 console.log(data);
                 window.location.reload();
+            },
+            error: function(XMLHttpRequest, statusText, errorThrown) {
+                alert(statusText);
             }
         });
     };

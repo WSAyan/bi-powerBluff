@@ -8,15 +8,16 @@
 require_once 'model/Crud.php';
 require_once 'utils/Redirect.php';
 
-if (isset($_POST['deptId']) && isset($_POST['clientId']) && isset($_POST['branchId']) && isset($_POST['reportId']) && isset($_POST['captionList'])) {
+if (isset($_POST['deptId']) && isset($_POST['clientId']) && isset($_POST['branchId']) && isset($_POST['reportId']) && isset($_POST['captionList']) && isset($_POST['captionListWithDepth'])) {
     $db = new Crud();
     $deptId = $_POST['deptId'];
     $clientId = $_POST['clientId'];
     $branchId = $_POST['branchId'];
     $reportId = $_POST['reportId'];
     $captionList = $_POST['captionList'];
-
-    $report = $db->saveReportDesign($deptId, $clientId, $branchId, $reportId, $captionList);
+    $captionListWithDepth = $_POST['captionListWithDepth'];
+    //echo($captionListWithDepth);
+    $report = $db->saveReportDesign($deptId, $clientId, $branchId, $reportId, $captionList,$captionListWithDepth);
     if ($report != null) {
         echo json_encode($report);
     } else {
