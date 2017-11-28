@@ -32,25 +32,41 @@ designReport = function () {
             reportId = this.value;
             //getDesignedReport();
         });
-
-        $(document).on('click', '.deleteItem', function () {
-            var selectedId = $(this).data('owner-id');
-            //console.log(selectedId);
-            $('#nestable-json').nestable('remove', selectedId);
-            var x = $('.dd').nestable('serialize');
-            json = JSON.stringify(x);
-            json = manipulateJsonOnRemoval();
-            customNestable();
-        });
     };
 
     var customNestable = function () {
-        //json = '[{"id":1,"name":"a"},{"id":2,"name":"b"},{"id":3,"name":"c","children":[{"id":4,"name":"d"},{"id":5,"name":"e"}]}]';
-        //console.log("customNestable");
-        //console.log(json);
-        var options = {
+        $('#nestable-json').nestable(renderedOption());
+
+        $('#addButton').click(function () {
+            var itemText = $('#addInputName').val();
+            var x = $('.dd').nestable('serialize');
+            json = JSON.stringify(x);
+            var newId = getMaxJsonDepth(json) + 1;
+            $('#nestable-json').nestable('add', {"id": newId, "name": itemText});
+            maxJsonDepth = newId;
+        });
+
+        $(document).on('click', '.deleteItem', function () {
+            var selectedId = $(this).data('owner-id');
+            $('#nestable-json').nestable('remove', selectedId, function () {
+                //customNestable();
+                var x = $('#nestable-json').nestable('serialize');
+                json = JSON.stringify(x);
+                json = manipulateJsonOnRemoval(json, selectedId);
+                console.log("manipulated Json: " + json);
+                $('#nestable-json').nestable('destroy');
+                $('#nestable-json').nestable(renderedOption());
+                maxJsonDepth = 0;
+            });
+        });
+    };
+
+    function renderedOption() {
+        console.log("Passed Json" + json);
+        return {
             'json': json,
             itemRenderer: function (item, content, children, options) {
+                console.log(item['data-id']);
                 var html = "<li class='dd-item' data-id='" + item['data-id'] + "' data-name='" + item['data-name'] + "'>";
                 html += "<div class='dd-handle'>" + item['data-name'] + "</div>";
                 html += "<span class='button-delete btn btn-default btn-xs pull-right deleteItem' data-owner-id='" + item['data-id'] + "'><i class=\"fa fa-times-circle-o\" aria-hidden=\"true\"></i></span>";
@@ -60,30 +76,7 @@ designReport = function () {
                 return html;
             }
         };
-
-        $('#nestable-json').nestable(options);
-        $('#addButton').click(function () {
-            var itemText = $('#addInputName').val();
-            var x = $('.dd').nestable('serialize');
-            json = JSON.stringify(x);
-            var newId = getMaxJsonDepth(json) + 1;
-            //console.log(newId);
-            $('#nestable-json').nestable('add', {"id": newId, "name": itemText});
-            maxJsonDepth = newId;
-        });
-
-        /*$(document).on('click', '.deleteItem', function () {
-            var selectedId = $(this).data('owner-id');
-            //console.log(selectedId);
-            $('#nestable-json').nestable('remove', selectedId);
-            /!*var x = $('.dd').nestable('serialize');
-            json = JSON.stringify(x);
-            console.log(json);
-            maxJsonDepth = getMaxJsonDepth(json);*!/
-            //customNestable();
-        });*/
-
-    };
+    }
 
     function getMaxJsonDepth(obj) {
         $.each(JSON.parse(obj), function (index, item) {
@@ -104,21 +97,25 @@ designReport = function () {
         return maxJsonDepth;
     }
 
-    function manipulateJsonOnRemoval(jsonObj,removeId){
-        $.each(JSON.parse(jsonObj), function (index, item) {
-            var recentId= check(parseInt(item.id));
+    function manipulateJsonOnRemoval(jsonObj, removeId) {
+        console.log("To Remove: " + removeId);
+        var manipulatedJson = JSON.parse(jsonObj);
+        $.each(manipulatedJson, function (index, item) {
+            var recentId = parseInt(item.id);
             if (item.children) {
                 $.each(item.children, function (index, sub) {
-                    recentId = check(parseInt(sub.id));
+                    recentId = parseInt(sub.id);
                 });
             }
-
-            if(recentId > removeId){
+            console.log("Before Removing: " + recentId);
+            if (recentId > removeId) {
                 recentId--;
             }
             item.id = recentId;
+            console.log("id: " + item.id);
         });
-        return jsonObj;
+
+        return JSON.stringify(manipulatedJson);
     }
 
     var generateReportsDropDown = function () {
