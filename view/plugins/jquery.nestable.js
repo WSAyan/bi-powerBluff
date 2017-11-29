@@ -487,7 +487,7 @@
             return ret;
 
             function traverse(item, depth, lft) {
-                var rgt = lft + 1, id, pid;
+                var rgt = lft + 1, id, pid, name;
 
                 if ($(item).children(o.listNodeName).children(o.itemNodeName).length > 0) {
                     depth++;
@@ -498,6 +498,7 @@
                 }
 
                 id = $(item).attr('data-id');
+                name = $(item).attr('data-name');
                 if (isInt(id)) {
                     id = parseInt(id);
                 }
@@ -508,7 +509,7 @@
                 }
 
                 if (id) {
-                    ret.push({"id": id, "parent_id": pid, "depth": depth, "lft": lft, "rgt": rgt});
+                    ret.push({"id": id, "name": name, "parent_id": pid, "depth": depth, "lft": lft, "rgt": rgt});
                 }
 
                 lft = rgt + 1;
@@ -609,6 +610,7 @@
                 if (id) {
                     ret.push({
                         "id": id,
+                        "name": item.data().name,
                         "parent_id": pid,
                         "depth": depth,
                         "left": left,

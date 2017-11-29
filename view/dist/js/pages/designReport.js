@@ -23,7 +23,7 @@ designReport = function () {
     var eventListeners = function () {
         $('#saveDesign').click(function () {
             var serializedData = JSON.stringify( $('#nestable-json').nestable('serialize'));
-            var dataWithDepth = JSON.stringify($('#nestable-json').nestable('toArray'));
+            var dataWithDepth = JSON.stringify($('#nestable-json').nestable('asNestedSet'));
             captionList = serializedData;
             captionListWithDepth = dataWithDepth;
             saveDesign();
