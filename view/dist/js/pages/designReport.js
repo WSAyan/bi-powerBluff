@@ -98,20 +98,25 @@ designReport = function () {
     }
 
     function manipulateJsonOnRemoval(jsonObj, removeId) {
-        //console.log("To Remove: " + removeId);
+        console.log("To Remove: " + removeId);
         var manipulatedJson = JSON.parse(jsonObj);
         $.each(manipulatedJson, function (index, item) {
             var recentId = parseInt(item.id);
-
             if (recentId > removeId) {
+                console.log("Before Removing: " + recentId);
                 item.id = recentId - 1;
+                console.log("id: " + item.id);
             }
+            console.log("id: " + item.id);
             if (item.children) {
                 $.each(item.children, function (index, sub) {
                     recentId = parseInt(sub.id);
                     if (recentId > removeId) {
+                        console.log("Before Removing: " + recentId);
                         sub.id = recentId - 1;
+                        console.log("sub id: " + sub.id);
                     }
+
                 });
             }
             //console.log("Before Removing: " + recentId);
