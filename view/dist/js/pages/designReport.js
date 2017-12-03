@@ -22,7 +22,7 @@ designReport = function () {
 
     var eventListeners = function () {
         $('#saveDesign').click(function () {
-            var serializedData = JSON.stringify( $('#nestable-json').nestable('serialize'));
+            var serializedData = JSON.stringify($('#nestable-json').nestable('serialize'));
             var dataWithDepth = JSON.stringify($('#nestable-json').nestable('asNestedSet'));
             captionList = serializedData;
             captionListWithDepth = dataWithDepth;
@@ -100,7 +100,7 @@ designReport = function () {
     function manipulateJsonOnRemoval(jsonObj, removeId) {
         console.log("To Remove: " + removeId);
         var manipulatedJson = JSON.parse(jsonObj);
-        $.each(manipulatedJson, function (index, item) {
+        /*$.each(manipulatedJson, function (index, item) {
             var recentId = parseInt(item.id);
             if (recentId > removeId) {
                 console.log("Before Removing: " + recentId);
@@ -121,8 +121,24 @@ designReport = function () {
             }
             //console.log("Before Removing: " + recentId);
             //console.log("id: " + item.id);
-        });
+        });*/
+        var i = 0;
+        $.each(manipulatedJson, drillThroughJson);
 
+        function drillThroughJson(key, value) {
+
+            //value.id = key;
+            if (value.id !== undefined) {
+                i++;
+                //console.log("index: " + i +" value: " + value.id);
+                value.id = i;
+            }
+            if (value !== null && typeof value === "object") {
+                $.each(value, drillThroughJson);
+            }
+        }
+
+        //console.log("new Json" + JSON.stringify(manipulatedJson));
         return JSON.stringify(manipulatedJson);
     }
 
@@ -161,7 +177,7 @@ designReport = function () {
                 console.log(data);
                 window.location.reload();
             },
-            error: function(XMLHttpRequest, statusText, errorThrown) {
+            error: function (XMLHttpRequest, statusText, errorThrown) {
                 alert(statusText);
             }
         });
