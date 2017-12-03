@@ -10,7 +10,7 @@ designReport = function () {
     var reportName = null;
     var captionList = null;
     var captionListWithDepth = null;
-    var maxJsonDepth = 0;
+    var maxJsonId = 0;
     var json = '[{"id":1,"name":"example"}]';
 
     var initialize = function () {
@@ -43,7 +43,7 @@ designReport = function () {
             json = JSON.stringify(x);
             var newId = getMaxJsonDepth(json) + 1;
             $('#nestable-json').nestable('add', {"id": newId, "name": itemText});
-            maxJsonDepth = newId;
+            maxJsonId = newId;
         });
 
         $(document).on('click', '.deleteItem', function () {
@@ -56,7 +56,7 @@ designReport = function () {
                 //console.log("manipulated Json: " + json);
                 $('#nestable-json').nestable('destroy');
                 $('#nestable-json').nestable(renderedOption());
-                maxJsonDepth = 0;
+                maxJsonId = 0;
             });
         });
     };
@@ -80,21 +80,21 @@ designReport = function () {
 
     function getMaxJsonDepth(obj) {
         $.each(JSON.parse(obj), function (index, item) {
-            maxJsonDepth = check(parseInt(item.id));
+            maxJsonId = check(parseInt(item.id));
             if (item.children) {
                 $.each(item.children, function (index, sub) {
-                    maxJsonDepth = check(parseInt(sub.id));
+                    maxJsonId = check(parseInt(sub.id));
                 });
             }
 
             function check(x) {
-                if (x > maxJsonDepth) {
-                    maxJsonDepth = x;
+                if (x > maxJsonId) {
+                    maxJsonId = x;
                 }
-                return maxJsonDepth;
+                return maxJsonId;
             }
         });
-        return maxJsonDepth;
+        return maxJsonId;
     }
 
     function manipulateJsonOnRemoval(jsonObj, removeId) {
@@ -138,7 +138,7 @@ designReport = function () {
             }
         }
 
-        //console.log("new Json" + JSON.stringify(manipulatedJson));
+        console.log("new Json" + JSON.stringify(manipulatedJson));
         return JSON.stringify(manipulatedJson);
     }
 

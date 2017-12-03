@@ -210,6 +210,17 @@ class Crud
         $decodedList = json_decode($captionListWithDepth, true);
         print_r($decodedList);
         $chartOfCaptionList = array(array());
+
+        $hierarchyList = array();
+        foreach ($decodedList as $i => $item) {
+            if ($decodedList[$i]['parent_id'] != null) {
+                $hierarchyList[$decodedList[$i]['id']] = $decodedList[$i]['parent_id'];
+            } else {
+                $hierarchyList[$decodedList[$i]['id']] = $decodedList[$i]['id'];
+            }
+        }
+        print_r($hierarchyList);
+
         foreach ($decodedList as $i => $item) {
             $chartOfCaptionList[$i]['CaptionListKey'] = 0;
             $chartOfCaptionList[$i]['OrgCode'] = 0;
@@ -223,6 +234,9 @@ class Crud
 
             if ($decodedList[$i]['parent_id'] != null) {
                 $chartOfCaptionList[$i]['CcIsLeaf'] = 1;
+                $ccCaptionParent = $this->createHierarchy($hierarchyList, $decodedList[$i]['id'], "");
+                print_r($ccCaptionParent);
+                $chartOfCaptionList[$i]['CcCaptionParent'] = strrev($ccCaptionParent);
             }
 
             $stmt = $this->conn->prepare("INSERT INTO chartofcaption(CaptionListKey, OrgCode, CcReportCode, CcCaptionNo, CcCaptionName, CcCaptionLevel, CcCaptionParent, CcCaptionOrder, CcIsLeaf) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -241,8 +255,25 @@ class Crud
                 $result = $stmt->execute();
                 $stmt->close();
             }
+            print_r(" -- ");
         }
         print_r($chartOfCaptionList);
+    }
+
+    private function createHierarchy($hierarchyList, $parent, $hierarchyString)
+    {
+        //print_r($parent);
+        if ($hierarchyList[$parent] != null) {
+            $hierarchyString .= $parent;
+        }
+
+        if ($hierarchyList[$parent] == $parent) {
+            //print_r($hierarchyString);
+            return $hierarchyString;
+        }
+
+        $hierarchyString = $this->createHierarchy($hierarchyList, $hierarchyList[$parent], $hierarchyString);
+        return $hierarchyString;
     }
 
     public function showReport($reportId, $clientId, $deptId, $branchId)
