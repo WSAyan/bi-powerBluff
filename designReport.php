@@ -34,6 +34,7 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="view/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+    <link rel="stylesheet" href="view/plugins/select2/select2.min.css">
     <link rel="stylesheet" href="view/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="view/dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="view/dist/css/jquery.nestable.css">
@@ -199,11 +200,12 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h3>Report Template</h3>
                     <div class="dd" id="nestable-json"></div>
                 </div>
-                <div class="col-md-6">
+
+                <div class="col-md-4">
                     <form class="form-inline" id="menu-add">
                         <h3>Add new caption</h3>
                         <div class="form-group">
@@ -225,16 +227,27 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
                         </div>
                         <button class="btn btn-info" id="editButton">Edit</button>
                     </form>
+
                 </div>
-            </div>
-            <div hidden class="row output-container">
-                <div class="col-md-offset-1 col-md-10">
-                    <h2 class="text-center">Output:</h2>
-                    <form class="form">
-                        <textarea class="form-control" id="json-output" rows="5"></textarea>
+                <div class="col-md-4">
+                    <h3>Map Accounts</h3>
+                    <form class="form-inline">
+                        <select class="form-control select2" multiple="multiple" data-placeholder="Select a State"
+                                style="width: 100%;">
+                            <option>Alabama</option>
+                            <option>Alaska</option>
+                            <option>California</option>
+                            <option>Delaware</option>
+                            <option>Tennessee</option>
+                            <option>Texas</option>
+                            <option>Washington</option>
+                        </select>
                     </form>
+
                 </div>
+
             </div>
+
         </section>
 
     </div>
@@ -253,6 +266,10 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
 
 <script src="view/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="view/bootstrap/js/bootstrap.min.js"></script>
+<script src="view/plugins/select2/select2.full.min.js"></script>
+<script src="view/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="view/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="view/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <script src="view/plugins/fastclick/fastclick.js"></script>
 <script src="view/dist/js/app.min.js"></script>
 <script src="view/plugins/slimScroll/jquery.slimscroll.min.js"></script>

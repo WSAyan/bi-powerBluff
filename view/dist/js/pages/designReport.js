@@ -14,6 +14,7 @@ designReport = function () {
     var json = '[{"id":1,"name":"example"}]';
 
     var initialize = function () {
+        $(".select2").select2();
         generateReportsDropDown();
         customNestable();
         //getDesignedReport();
@@ -39,21 +40,25 @@ designReport = function () {
 
         $('#addButton').click(function () {
             var itemText = $('#addInputName').val();
-            var x = $('.dd').nestable('serialize');
+            var x = $('#nestable-json').nestable('serialize');
             json = JSON.stringify(x);
             var newId = getMaxJsonDepth(json) + 1;
             $('#nestable-json').nestable('add', {"id": newId, "name": itemText});
             maxJsonId = newId;
+            x = $('#nestable-json').nestable('serialize');
+            json = JSON.stringify(x);
+            json = manipulateJson(json);
+            $('#nestable-json').nestable('destroy');
+            $('#nestable-json').nestable(renderedOption());
+            maxJsonId = 0;
         });
 
         $(document).on('click', '.deleteItem', function () {
             var selectedId = $(this).data('owner-id');
             $('#nestable-json').nestable('remove', selectedId, function () {
-                //customNestable();
                 var x = $('#nestable-json').nestable('serialize');
                 json = JSON.stringify(x);
-                json = manipulateJsonOnRemoval(json, selectedId);
-                //console.log("manipulated Json: " + json);
+                json = manipulateJson(json);
                 $('#nestable-json').nestable('destroy');
                 $('#nestable-json').nestable(renderedOption());
                 maxJsonId = 0;
@@ -62,11 +67,9 @@ designReport = function () {
     };
 
     function renderedOption() {
-        //console.log("Passed Json" + json);
         return {
             'json': json,
             itemRenderer: function (item, content, children, options) {
-                //console.log(item['data-id']);
                 var html = "<li class='dd-item' data-name='" + item['data-name'] + "' data-id='" + item['data-id'] + "' >";
                 html += "<div class='dd-handle'>" + item['data-name'] + "</div>";
                 html += "<span class='button-delete btn btn-default btn-xs pull-right deleteItem' data-owner-id='" + item['data-id'] + "'><i class=\"fa fa-times-circle-o\" aria-hidden=\"true\"></i></span>";
@@ -97,40 +100,13 @@ designReport = function () {
         return maxJsonId;
     }
 
-    function manipulateJsonOnRemoval(jsonObj, removeId) {
-        console.log("To Remove: " + removeId);
+    function manipulateJson(jsonObj) {
         var manipulatedJson = JSON.parse(jsonObj);
-        /*$.each(manipulatedJson, function (index, item) {
-            var recentId = parseInt(item.id);
-            if (recentId > removeId) {
-                console.log("Before Removing: " + recentId);
-                item.id = recentId - 1;
-                console.log("id: " + item.id);
-            }
-            console.log("id: " + item.id);
-            if (item.children) {
-                $.each(item.children, function (index, sub) {
-                    recentId = parseInt(sub.id);
-                    if (recentId > removeId) {
-                        console.log("Before Removing: " + recentId);
-                        sub.id = recentId - 1;
-                        console.log("sub id: " + sub.id);
-                    }
-
-                });
-            }
-            //console.log("Before Removing: " + recentId);
-            //console.log("id: " + item.id);
-        });*/
         var i = 0;
         $.each(manipulatedJson, drillThroughJson);
-
         function drillThroughJson(key, value) {
-
-            //value.id = key;
             if (value.id !== undefined) {
                 i++;
-                //console.log("index: " + i +" value: " + value.id);
                 value.id = i;
             }
             if (value !== null && typeof value === "object") {
@@ -138,7 +114,7 @@ designReport = function () {
             }
         }
 
-        console.log("new Json" + JSON.stringify(manipulatedJson));
+        //console.log("new Json" + JSON.stringify(manipulatedJson));
         return JSON.stringify(manipulatedJson);
     }
 

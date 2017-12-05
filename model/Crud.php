@@ -211,33 +211,31 @@ class Crud
         print_r($decodedList);
         $chartOfCaptionList = array(array());
 
+        $parentList = array();
         $hierarchyList = array();
+        $index = 0;
         foreach ($decodedList as $i => $item) {
             if ($decodedList[$i]['parent_id'] != null) {
                 $hierarchyList[$decodedList[$i]['id']] = $decodedList[$i]['parent_id'];
+                $parentList[$index] = $decodedList[$i]['parent_id'];
+                $index++;
             } else {
                 $hierarchyList[$decodedList[$i]['id']] = $decodedList[$i]['id'];
             }
         }
+        print_r($parentList);
         print_r($hierarchyList);
 
         foreach ($decodedList as $i => $item) {
             $chartOfCaptionList[$i]['CaptionListKey'] = 0;
             $chartOfCaptionList[$i]['OrgCode'] = 0;
             $chartOfCaptionList[$i]['CcReportCode'] = 0;
-            $chartOfCaptionList[$i]['CcCaptionNo'] = 0;
+            $chartOfCaptionList[$i]['CcCaptionNo'] = $decodedList[$i]['id'];
             $chartOfCaptionList[$i]['CcCaptionName'] = $decodedList[$i]['name'];
             $chartOfCaptionList[$i]['CcCaptionLevel'] = $decodedList[$i]['depth'] + 1;
-            $chartOfCaptionList[$i]['CcCaptionParent'] = 0;
+            $chartOfCaptionList[$i]['CcCaptionParent'] = $decodedList[$i]['parent_id'];
             $chartOfCaptionList[$i]['CcCaptionOrder'] = $i + 1;
-            $chartOfCaptionList[$i]['CcIsLeaf'] = 0;
-
-            if ($decodedList[$i]['parent_id'] != null) {
-                $chartOfCaptionList[$i]['CcIsLeaf'] = 1;
-                $ccCaptionParent = $this->createHierarchy($hierarchyList, $decodedList[$i]['id'], "");
-                print_r($ccCaptionParent);
-                $chartOfCaptionList[$i]['CcCaptionParent'] = strrev($ccCaptionParent);
-            }
+            $chartOfCaptionList[$i]['CcIsLeaf'] = $this->isLeaf($decodedList[$i]['id'], $parentList);
 
             $stmt = $this->conn->prepare("INSERT INTO chartofcaption(CaptionListKey, OrgCode, CcReportCode, CcCaptionNo, CcCaptionName, CcCaptionLevel, CcCaptionParent, CcCaptionOrder, CcIsLeaf) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
             if ($stmt) {
@@ -255,9 +253,17 @@ class Crud
                 $result = $stmt->execute();
                 $stmt->close();
             }
-            print_r(" -- ");
         }
         print_r($chartOfCaptionList);
+    }
+
+    private function isLeaf($id, $parentList)
+    {
+        if (in_array($id, $parentList)) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     private function createHierarchy($hierarchyList, $parent, $hierarchyString)
