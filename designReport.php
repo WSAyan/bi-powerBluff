@@ -231,8 +231,12 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
                 </div>
                 <div class="col-md-4">
                     <h3>Map Accounts</h3>
-                    <form class="form-inline">
-                        <select class="form-control select2" multiple="multiple" data-placeholder="Select a State"
+                    <div id="mapperHolder">
+
+                    </div>
+                    <!--<form class="form-inline">
+                        <button class="btn btn-default" id="captionId">levelId</button>
+                        <select class="form-control select2" id="accountListId" multiple="multiple" data-placeholder="Select a State"
                                 style="width: 100%;">
                             <option>Alabama</option>
                             <option>Alaska</option>
@@ -242,7 +246,7 @@ if (isset($_SESSION['sid']) && isset($_SESSION['user'])) {
                             <option>Texas</option>
                             <option>Washington</option>
                         </select>
-                    </form>
+                    </form>-->
 
                 </div>
 

@@ -16,6 +16,7 @@ designReport = function () {
     var initialize = function () {
         $(".select2").select2();
         generateReportsDropDown();
+        getCaptionList();
         customNestable();
         //getDesignedReport();
         eventListeners();
@@ -104,6 +105,7 @@ designReport = function () {
         var manipulatedJson = JSON.parse(jsonObj);
         var i = 0;
         $.each(manipulatedJson, drillThroughJson);
+
         function drillThroughJson(key, value) {
             if (value.id !== undefined) {
                 i++;
@@ -179,6 +181,37 @@ designReport = function () {
             error: function (xhr, statusText) {
                 console.log(statusText);
                 customNestable();
+            }
+        });
+    };
+
+    var getCaptionList = function () {
+        $.ajax({
+            url: baseURL + 'getAccountMapping.php',
+            type: 'GET',
+            data: {
+                'clientId': 0,
+                'reportId': 0
+            },
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, o) {
+                    var html = '<form class="form-inline" id="' + o.CaptionListKey + '">';
+                    html += '<button class="btn btn-default" id="' + o.CcCaptionNo + '" value="' + o.CcCaptionName + '">' + o.CcCaptionName + '</button>';
+                    html += '<select class="form-control select2" id="accountListId" multiple="multiple" data-placeholder="Select an account" style="width: 100%;">';
+                    html += '<option>121465454646565</option>';
+                    html += '<option>515616516</option>';
+                    html += '<option>876464464648</option>';
+                    html += '<option>2365985</option>';
+                    html += '</select>';
+                    html += '</form>';
+                    $('#mapperHolder').append(html);
+                    $(".select2").select2();
+                });
+                console.log("Success: " + JSON.stringify(data));
+            },
+            error: function (xhr, statusText) {
+                console.log("Error: " + statusText);
             }
         });
     };

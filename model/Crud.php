@@ -46,6 +46,7 @@ class Crud
             }
         } else {
             echo $this->conn->error;
+            return false;
         }
     }
 
@@ -63,6 +64,8 @@ class Crud
                 $stmt->close();
                 return false;
             }
+        } else {
+            return false;
         }
     }
 
@@ -87,6 +90,7 @@ class Crud
             }
         } else {
             echo $this->conn->error;
+            return NULL;
         }
     }
 
@@ -103,6 +107,7 @@ class Crud
             }
         } else {
             echo $this->conn->error;
+            return NULL;
         }
     }
 
@@ -124,6 +129,7 @@ class Crud
             }
         } else {
             echo $this->conn->error;
+            return NULL;
         }
     }
 
@@ -141,6 +147,7 @@ class Crud
             }
         } else {
             echo $this->conn->error;
+            return NULL;
         }
     }
 
@@ -157,6 +164,7 @@ class Crud
             }
         } else {
             echo $this->conn->error;
+            return NULL;
         }
     }
 
@@ -178,6 +186,7 @@ class Crud
             }
         } else {
             echo $this->conn->error;
+            return false;
         }
     }
 
@@ -189,7 +198,7 @@ class Crud
             $result = $stmt->execute();
             $stmt->close();
             if ($result) {
-                $this->saveAccountingMapping($captionListWithDepth);
+                $this->saveAccountingMapping($captionListWithDepth, $clientId, $branchId, $reportId);
                 $stmt = $this->conn->prepare("SELECT * FROM tempdesignedreport WHERE reportId = ?");
                 $stmt->bind_param("s", $reportId);
                 $stmt->execute();
@@ -201,14 +210,13 @@ class Crud
             }
         } else {
             echo $this->conn->error;
+            return false;
         }
     }
 
-    private function saveAccountingMapping($captionListWithDepth)
+    private function saveAccountingMapping($captionListWithDepth, $clientId, $branchId, $reportId)
     {
-        print_r($captionListWithDepth);
         $decodedList = json_decode($captionListWithDepth, true);
-        print_r($decodedList);
         $chartOfCaptionList = array(array());
 
         $parentList = array();
@@ -223,13 +231,11 @@ class Crud
                 $hierarchyList[$decodedList[$i]['id']] = $decodedList[$i]['id'];
             }
         }
-        print_r($parentList);
-        print_r($hierarchyList);
 
         foreach ($decodedList as $i => $item) {
-            $chartOfCaptionList[$i]['CaptionListKey'] = 0;
-            $chartOfCaptionList[$i]['OrgCode'] = 0;
-            $chartOfCaptionList[$i]['CcReportCode'] = 0;
+            $chartOfCaptionList[$i]['CaptionListKey'] = $clientId . $branchId . $reportId . $decodedList[$i]['id'];
+            $chartOfCaptionList[$i]['OrgCode'] = $clientId;
+            $chartOfCaptionList[$i]['CcReportCode'] = $reportId;
             $chartOfCaptionList[$i]['CcCaptionNo'] = $decodedList[$i]['id'];
             $chartOfCaptionList[$i]['CcCaptionName'] = $decodedList[$i]['name'];
             $chartOfCaptionList[$i]['CcCaptionLevel'] = $decodedList[$i]['depth'] + 1;
@@ -257,6 +263,24 @@ class Crud
         print_r($chartOfCaptionList);
     }
 
+    public function getLeafCaptionList($clientId, $reportId)
+    {
+        $stmt = $this->conn->prepare("SELECT CaptionListKey,CcReportCode,CcCaptionNo,CcCaptionName,OrgCode FROM `chartofcaption` WHERE OrgCode = ? AND CcReportCode = ? AND CcIsLeaf = 1 ");
+        if ($stmt) {
+            $stmt->bind_param("ss", $clientId, $reportId);
+            if ($stmt->execute()) {
+                $reports = $stmt->get_result();
+                $stmt->close();
+                return $reports;
+            } else {
+                return NULL;
+            }
+        } else {
+            echo $this->conn->error;
+            return NULL;
+        }
+    }
+
     private function isLeaf($id, $parentList)
     {
         if (in_array($id, $parentList)) {
@@ -268,13 +292,11 @@ class Crud
 
     private function createHierarchy($hierarchyList, $parent, $hierarchyString)
     {
-        //print_r($parent);
         if ($hierarchyList[$parent] != null) {
             $hierarchyString .= $parent;
         }
 
         if ($hierarchyList[$parent] == $parent) {
-            //print_r($hierarchyString);
             return $hierarchyString;
         }
 
@@ -300,6 +322,7 @@ class Crud
             }
         } else {
             echo $this->conn->error;
+            return NULL;
         }
     }
 
@@ -321,6 +344,7 @@ class Crud
             }
         } else {
             echo $this->conn->error;
+            return NULL;
         }
     }
 
@@ -343,6 +367,7 @@ class Crud
             }
         } else {
             echo $this->conn->error;
+            return NULL;
         }
     }
 
